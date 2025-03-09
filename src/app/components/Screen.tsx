@@ -9,7 +9,7 @@ const Screen = () => {
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
-        <div className="flex justify-end text-2xl">0</div>
+        <div className="flex justify-end text-2xl mt-3">0</div>
       </div>
     </div>
   );
