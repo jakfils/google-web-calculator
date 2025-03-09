@@ -6,13 +6,61 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1f1f1f;
+  --calculator-bg-color: #ffffff;
+  --result-text-color: #1f1f1f;
+  --digit-text-color: #5e5e5e;
+  --history-text-color: #5e5e5e;
+  --operation-text-color: #5e5e5e;
+  --operator-text-color: #001b35;
+  --equal-text-color: #ffffff;
+  --fx-btn-text-color: #001b35;
+  --digit-btn-text-color: #2c303c;
+  --rad-deg-active-text-color: #0b57cf;
+  --equal-bg-color: #0b57cf;
+  --digit-bg-color: #f4f5f7;
+  --operator-bg-color: #e6edff;
+  --result-area-border-color: #d2d2d2;
 }
 
-@media (prefers-color-scheme: light) {
+@layer components {
+  .digit {
+    background-color: var(--digit-bg-color);
+    color: var(--digit-text-color);
+    @apply rounded-4xl
+  }
+
+  .fx {
+    background-color: var(--operator-bg-color);
+    color: var(--operator-text-color);
+    @apply rounded-4xl
+  }
+
+  .equal {
+    background-color: var(--equal-bg-color);
+    color: var(--equal-text-color);
+    @apply rounded-4xl
+  }
+}
+
+@media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111217;
     --foreground: #ededed;
+    --calculator-bg-color: #111217;
+    --result-text-color: #ececec;
+    --digit-text-color: #bababe;
+    --history-text-color: #bababe;
+    --operation-text-color: #bababe;
+    --operator-text-color: #edefff;
+    --equal-text-color: #0a1222;
+    --fx-btn-text-color: #aec6ef;
+    --digit-btn-text-color: #eef0fd;
+    --rad-deg-active-text-color: #afc6ed;
+    --equal-bg-color: #afc6ed;
+    --digit-bg-color: #2e303c;
+    --operator-bg-color: #2c303c;
+    --result-area-border-color: #3f4348;
   }
 }
 
