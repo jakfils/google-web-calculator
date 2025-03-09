@@ -27,19 +27,19 @@
   .digit {
     background-color: var(--digit-bg-color);
     color: var(--digit-text-color);
-    @apply rounded-4xl
+    @apply rounded-4xl text-center p-1
   }
 
   .fx {
     background-color: var(--operator-bg-color);
     color: var(--operator-text-color);
-    @apply rounded-4xl
+    @apply rounded-4xl text-center p-1
   }
 
   .equal {
     background-color: var(--equal-bg-color);
     color: var(--equal-text-color);
-    @apply rounded-4xl
+    @apply rounded-4xl text-center p-1
   }
 }
 

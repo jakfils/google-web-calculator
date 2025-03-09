@@ -12,7 +12,7 @@ export default function Home() {
   };
   return (
     <>
-      <main className="m-2 w-5/6 rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">
+      <main className="m-2 w-full rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">
         <div>
           <Screen />
         </div>
