@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import Screen from "./components/Screen";
-import DesktopPad from "./components/DesktopPad";
-import PhoneDigitPad from "./components/PhoneDigitPad";
-import PhoneFXPad from "./components/PhoneFXPad";
+import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState(false);
@@ -16,20 +14,8 @@ export default function Home() {
         <div>
           <Screen />
         </div>
-        <div className="hidden sm:block">
-          <DesktopPad />
-        </div>
-        <div className="sm:hidden">
-          {!isFxActive ? (
-            <div>
-              <PhoneDigitPad />
-            </div>
-          ) : null}
-          {isFxActive ? (
-            <div>
-              <PhoneFXPad />
-            </div>
-          ) : null}
+        <div>
+          <DigitPad isFxActive={isFxActive} handleFx={handleFx} />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />
       </main>
