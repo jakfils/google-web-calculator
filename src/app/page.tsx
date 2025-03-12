@@ -15,7 +15,7 @@ export default function Home() {
           <Screen />
         </div>
         <div>
-          <DigitPad isFxActive={isFxActive} handleFx={handleFx} />
+          <DigitPad isFxActive={isFxActive} />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />
       </main>

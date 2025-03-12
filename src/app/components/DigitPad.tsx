@@ -6,13 +6,9 @@ import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
 interface PhoneDigitPadProps {
   isFxActive: boolean;
-  handleFx: (Value: string) => void;
 }
 
-const DigitPad: React.FC<PhoneDigitPadProps> = ({
-  isFxActive,
-  handleFx,
-}) => {
+const DigitPad: React.FC<PhoneDigitPadProps> = ({ isFxActive }) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
     setIsInvActive(!isInvActive);
