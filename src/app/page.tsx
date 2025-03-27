@@ -26,15 +26,28 @@ export default function Home() {
 
       const beforeCursor = cleanPrev.slice(0, cursorPosition);
       const afterCursor = cleanPrev.slice(cursorPosition);
-      const newExpression = beforeCursor + value + afterCursor;
+
+      // Vérification du dernier caractère
+      const lastChar = beforeCursor.slice(-1);
+      const isLastOperator = /[+\-*/]/.test(lastChar);
+      const isNewOperator = /[+\-*/]/.test(value);
+
+      let newExpression = beforeCursor + value + afterCursor;
+
+      // Empêcher la répétition de plusieurs opérateurs sauf "*-"
+      if (isLastOperator && isNewOperator) {
+        if (!(lastChar === "*" && value === "-")) {
+          newExpression = beforeCursor.slice(0, -1) + value + afterCursor;
+        }
+      }
 
       const newCursorPos = beforeCursor.length + offset;
       setCursorPosition(newCursorPos);
-      console.log(expression);
 
       return newExpression;
     });
   };
+
 
   const handleFx = (value: string) => {
     setIsFxActive(value === "fx");
