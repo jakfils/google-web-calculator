@@ -3,7 +3,7 @@ import { useState } from "react";
 import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
-import { evaluate } from "mathjs";
+import { evaluate, abs } from "mathjs";
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
   const [expression, setExpression] = useState<string>("0");
@@ -12,8 +12,12 @@ export default function Home() {
   const [cursorPosition, setCursorPosition] = useState<number>(
     expression.length,
   );
+  const [isDegActive, setIsDegActive] = useState<boolean>(false);
   const resetExpression = () => {
     setExpression("0");
+  };
+  const handleDegActive = (value: string) => {
+    setIsDegActive(value === "deg");
   };
   const handleEqualButton = (value: string) => {
     SetIsEqualButton(value === "equal");
@@ -22,19 +26,18 @@ export default function Home() {
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
       handleEqualButton("none");
+
       const cleanPrev = prev === "0" ? "" : prev;
 
       const beforeCursor = cleanPrev.slice(0, cursorPosition);
       const afterCursor = cleanPrev.slice(cursorPosition);
 
-      // Vérification du dernier caractère
       const lastChar = beforeCursor.slice(-1);
       const isLastOperator = /[+\-*/]/.test(lastChar);
       const isNewOperator = /[+\-*/]/.test(value);
 
       let newExpression = beforeCursor + value + afterCursor;
 
-      // Empêcher la répétition de plusieurs opérateurs sauf "*-"
       if (isLastOperator && isNewOperator) {
         if (!(lastChar === "*" && value === "-")) {
           newExpression = beforeCursor.slice(0, -1) + value + afterCursor;
@@ -48,7 +51,6 @@ export default function Home() {
     });
   };
 
-
   const handleFx = (value: string) => {
     setIsFxActive(value === "fx");
   };
@@ -58,7 +60,7 @@ export default function Home() {
       if (expr.startsWith("*") || expr.startsWith("/")) {
         expr = "0" + expr;
       }
-      setResult(evaluate(expr) as number);
+      setResult(abs(evaluate(expr)) < 1e-14 ? 0 : (evaluate(expr) as number));
     } catch (error) {
       setResult("Error");
       console.error("Expression invalide :", error);
@@ -86,6 +88,8 @@ export default function Home() {
             handleIsEqualButton={handleEqualButton}
             onInsert={handleInsert}
             resetExpression={resetExpression}
+            isDegActive={isDegActive}
+            handleDegActive={handleDegActive}
           />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />

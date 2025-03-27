@@ -13,6 +13,8 @@ interface DigitPadProps {
   handleIsEqualButton: (value: string) => void;
   onInsert: (value: string, offset?: number) => void;
   resetExpression: () => void;
+  handleDegActive: (value: string) => void;
+  isDegActive: boolean;
 }
 
 const DigitPad: React.FC<DigitPadProps> = ({
@@ -24,6 +26,8 @@ const DigitPad: React.FC<DigitPadProps> = ({
   handleIsEqualButton,
   onInsert,
   resetExpression,
+  handleDegActive,
+  isDegActive,
 }) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
@@ -201,22 +205,29 @@ const DigitPad: React.FC<DigitPadProps> = ({
         <FaPlus />
       </button>
       <button
+        onClick={() => handleDegActive("rad")}
         className={classNames(
           "fx -mr-1 rounded-r-none sm:col-start-1 sm:row-start-1",
           phoneFxClass,
+          !isDegActive ? "text-[var(--rad-deg-active-text-color)]" : "",
         )}
       >
         Rad
       </button>
       <button
+        onClick={() => handleDegActive("deg")}
         className={classNames(
           "fx -ml-1 rounded-l-none border-l-2 border-[var(--rad-deg-active-text-color)] sm:col-start-2 sm:row-start-1",
           phoneFxClass,
+          isDegActive ? "text-[var(--rad-deg-active-text-color)]" : "",
         )}
       >
         Deg
       </button>
       <button
+        onClick={() => {
+          onInsert("!", 1);
+        }}
         className={classNames("fx sm:col-start-3 sm:row-start-1", phoneFxClass)}
       >
         x!
@@ -228,6 +239,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         Inv
       </button>
       <button
+        onClick={() => {
+          onInsert("sin()", 4);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-2",
           phoneNoInvClass,
