@@ -4,11 +4,27 @@ import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
-interface PhoneDigitPadProps {
+interface DigitPadProps {
   isFxActive: boolean;
+  expression: string;
+  result: number | string;
+  handleResult: () => void;
+  isEqualButton: boolean;
+  handleIsEqualButton: (value: string) => void;
+  onInsert: (value: string, offset?: number) => void;
+  resetExpression: () => void;
 }
 
-const DigitPad: React.FC<PhoneDigitPadProps> = ({ isFxActive }) => {
+const DigitPad: React.FC<DigitPadProps> = ({
+  isFxActive,
+  expression,
+  result,
+  handleResult,
+  isEqualButton,
+  handleIsEqualButton,
+  onInsert,
+  resetExpression,
+}) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
     setIsInvActive(!isInvActive);
@@ -38,36 +54,150 @@ const DigitPad: React.FC<PhoneDigitPadProps> = ({ isFxActive }) => {
     <div className="grid grid-cols-4 grid-rows-4 gap-2 sm:grid-cols-7">
       <button className={classNames("fx", phoneDigitClass)}>{"("}</button>
       <button className={classNames("fx", phoneDigitClass)}>{")"}</button>
-      <button className={classNames("fx", phoneDigitClass)}>%</button>
-      <button className={classNames("fx", phoneDigitClass)}>AC</button>
-      <button className={classNames("digit", phoneDigitClass)}>7</button>
-      <button className={classNames("digit", phoneDigitClass)}>8</button>
-      <button className={classNames("digit", phoneDigitClass)}>9</button>
-      <button className={classNames("fx", phoneDigitClass)}>
+      <button
+        onClick={() => {
+          onInsert("%", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
+        %
+      </button>
+      <button
+        onClick={() => {
+          handleIsEqualButton("non");
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
+        AC
+      </button>
+      <button
+        onClick={() => {
+          onInsert("7", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        7
+      </button>
+      <button
+        onClick={() => {
+          onInsert("8", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        8
+      </button>
+      <button
+        onClick={() => {
+          onInsert("9", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        9
+      </button>
+      <button
+        onClick={() => {
+          onInsert("/", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
         <FaDivide />
       </button>
-      <button className={classNames("digit", phoneDigitClass)}>4</button>
-      <button className={classNames("digit", phoneDigitClass)}>5</button>
-      <button className={classNames("digit", phoneDigitClass)}>6</button>
-      <button className={classNames("fx", phoneDigitClass)}>
+      <button
+        onClick={() => {
+          onInsert("4", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        4
+      </button>
+      <button
+        onClick={() => {
+          onInsert("5", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        5
+      </button>
+      <button
+        onClick={() => {
+          onInsert("6", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        6
+      </button>
+      <button
+        onClick={() => {
+          onInsert("*", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
         <IoClose />
       </button>
-      <button className={classNames("digit", phoneDigitClass)}>1</button>
-      <button className={classNames("digit", phoneDigitClass)}>2</button>
-      <button className={classNames("digit", phoneDigitClass)}>3</button>
-      <button className={classNames("fx", phoneDigitClass)}>
+      <button
+        onClick={() => {
+          onInsert("1", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        1
+      </button>
+      <button
+        onClick={() => {
+          onInsert("2", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        2
+      </button>
+      <button
+        onClick={() => {
+          onInsert("3", 1);
+        }}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        3
+      </button>
+      <button
+        onClick={() => {
+          onInsert("-", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
         <FaMinus />
       </button>
-      <button className={classNames("digit", phoneDigitClass)}>0</button>
-      <button className={classNames("digit", phoneDigitClass)}>.</button>
       <button
+        onClick={() => onInsert("0", 1)}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        0
+      </button>
+      <button
+        onClick={() => onInsert(".", 1)}
+        className={classNames("digit", phoneDigitClass)}
+      >
+        .
+      </button>
+      <button
+        onClick={() => {
+          if (!isEqualButton) {
+            resetExpression();
+            handleIsEqualButton("equal");
+            handleResult();
+          }
+        }}
         className={classNames("equal", {
           "col-start-4 row-start-4": isFxActive,
         })}
       >
         <FaEquals />
       </button>
-      <button className={classNames("fx", phoneDigitClass)}>
+      <button
+        onClick={() => {
+          onInsert("+", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
         <FaPlus />
       </button>
       <button
@@ -130,11 +260,17 @@ const DigitPad: React.FC<PhoneDigitPadProps> = ({ isFxActive }) => {
         e<sup>x</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("pi", 2);
+        }}
         className={classNames("fx sm:col-start-1 sm:row-start-3", phoneFxClass)}
       >
         <TbMathPi />
       </button>
       <button
+        onClick={() => {
+          onInsert("cos()", 4);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-3",
           phoneNoInvClass,

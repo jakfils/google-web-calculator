@@ -1,5 +1,28 @@
+"use client";
+import { useEffect, useRef } from "react";
+import { expression } from "mathjs";
 import { MdHistory } from "react-icons/md";
-const Screen = () => {
+interface ScreenProps {
+  result: number|string;
+  expression: string;
+  isEqualButton: boolean;
+  cursorPosition: number;
+}
+const Screen: React.FC<ScreenProps> = ({
+  result,
+  expression,
+  isEqualButton,
+  cursorPosition,
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.selectionStart = cursorPosition;
+      inputRef.current.selectionEnd = cursorPosition;
+      inputRef.current.focus(); // Garde le focus automatiquement
+    }
+  }, [cursorPosition, expression]); // Mise à jour à chaque modification
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
       <div>
@@ -9,7 +32,11 @@ const Screen = () => {
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
-        <div className="flex justify-end text-2xl mt-3">0</div>
+        <input
+          className="mt-3 w-full text-right text-2xl focus:outline-none"
+          value={!isEqualButton ? expression : result}
+          readOnly
+        ></input>
       </div>
     </div>
   );
