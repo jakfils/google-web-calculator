@@ -116,7 +116,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isEqualButton ? handleMultipleOperations("/") : onInsert("/", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("/");
+          } else {
+            onInsert("/", 1);
+          }
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -148,7 +152,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isEqualButton ? handleMultipleOperations("*") : onInsert("*", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("*");
+          } else {
+            onInsert("*", 1);
+          }
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -180,7 +188,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isEqualButton ? handleMultipleOperations("-") : onInsert("-", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("-");
+          } else {
+            onInsert("-", 1);
+          }
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -214,7 +226,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isEqualButton ? handleMultipleOperations("+") : onInsert("+", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("+");
+          } else {
+            onInsert("+", 1);
+          }
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -256,8 +272,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("sin(pi/180*)", 11);
-          !isDegActive && onInsert("sin()", 4);
+          if (isDegActive) {
+            onInsert("sin(pi/180*)", 11);
+          }
+          if (!isDegActive) {
+            onInsert("sin()", 4);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-2",
@@ -268,8 +288,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("180/pi*asin()", 12);
-          !isDegActive && onInsert("asin()", 5);
+          if (isDegActive) {
+            onInsert("180/pi*asin()", 12);
+          }
+          if (!isDegActive) {
+            onInsert("asin()", 5);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-2",
@@ -310,8 +334,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("cos(pi/180*)", 11);
-          !isDegActive && onInsert("cos()", 4);
+          if (isDegActive) {
+            onInsert("cos(pi/180*)", 11);
+          }
+          if (!isDegActive) {
+            onInsert("cos()", 4);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-3",
@@ -322,8 +350,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("180/pi*acos()", 12);
-          !isDegActive && onInsert("acos()", 5);
+          if (isDegActive) {
+            onInsert("180/pi*acos()", 12);
+          }
+          if (!isDegActive) {
+            onInsert("acos()", 5);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-3",
@@ -364,8 +396,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("tan(pi/180*)", 11);
-          !isDegActive && onInsert("tan()", 4);
+          if (isDegActive) {
+            onInsert("tan(pi/180*)", 11);
+          }
+          if (!isDegActive) {
+            onInsert("tan()", 4);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-4",
@@ -376,8 +412,12 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          isDegActive && onInsert("180/pi*atan()", 12);
-          !isDegActive && onInsert("atan()", 5);
+          if (isDegActive) {
+            onInsert("180/pi*atan()", 12);
+          }
+          if (!isDegActive) {
+            onInsert("atan()", 5);
+          }
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-4",
