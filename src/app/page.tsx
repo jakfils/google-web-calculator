@@ -4,7 +4,6 @@ import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 import { evaluate, abs } from "mathjs";
-import { before } from "node:test";
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
   const [expression, setExpression] = useState<string>("0");
