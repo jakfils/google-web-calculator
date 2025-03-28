@@ -4,7 +4,7 @@ import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
-import { random } from "mathjs";
+import {random } from "mathjs";
 interface DigitPadProps {
   isFxActive: boolean;
   handleResult: () => void;

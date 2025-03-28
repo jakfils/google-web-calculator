@@ -63,8 +63,10 @@ export default function Home() {
       const afterCursor = cleanPrev.slice(cursorPosition);
 
       const lastChar = beforeCursor.slice(-1);
-      const isLastOperator = /[+\-*/]/.test(lastChar);
-      const isNewOperator = /[+\-*/]/.test(value);
+      // const isLastOperator = /[+\-*/]/.test(lastChar);
+      const isLastOperator = ["+", "-", "*", "/"].includes(lastChar);
+      // const isNewOperator = /[+\-*/]/.test(value);
+      const isNewOperator = ["+", "-", "*", "/"].includes(value);
 
       let newExpression = beforeCursor + value + afterCursor;
 
