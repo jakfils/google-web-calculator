@@ -4,6 +4,7 @@ import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 import { evaluate, abs } from "mathjs";
+import { before } from "node:test";
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
   const [expression, setExpression] = useState<string>("0");
@@ -23,11 +24,41 @@ export default function Home() {
     SetIsEqualButton(value === "equal");
   };
 
+  const handleCloseBracket = () => {
+    const beforeCursor = expression.slice(0, cursorPosition);
+    const afterCursor = expression.slice(cursorPosition);
+    const position = afterCursor.indexOf(")");
+    const newCursorPos = beforeCursor.length + position + 1;
+    setCursorPosition(newCursorPos);
+  };
+  const handleAC = () => {
+    // handleEqualButton("none");
+    // expression.length === 1
+    //   ? setExpression("0")
+    //   : isEqualButton
+    //     ? setExpression("0")
+    //     : setExpression((prev) => prev.slice(0, -1));
+  };
+  const handleMultipleOperations = (value: string) => {
+    handleEqualButton("none");
+    setExpression(result.toString() + value);
+    setCursorPosition(result.toString().length + 1);
+  };
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
       handleEqualButton("none");
 
-      const cleanPrev = prev === "0" ? "" : prev;
+      // Vérifier si la première value est "*" ou "!"
+      const keepZero =
+        value === "*" ||
+        value === "!" ||
+        value === "." ||
+        value === "%" ||
+        value === "/" ||
+        value === "^" ||
+        value === "-" ||
+        value === "+";
+      const cleanPrev = prev === "0" && !keepZero ? "" : prev;
 
       const beforeCursor = cleanPrev.slice(0, cursorPosition);
       const afterCursor = cleanPrev.slice(cursorPosition);
@@ -56,11 +87,21 @@ export default function Home() {
   };
   const handleResult = () => {
     try {
-      let expr = expression;
-      if (expr.startsWith("*") || expr.startsWith("/")) {
-        expr = "0" + expr;
+      const containAns = expression.includes("Ans");
+      const evaluatedExpression = containAns
+        ? evaluate(expression.replace(/Ans/g, `(${result.toString()})`))
+        : evaluate(expression);
+      // Vérifier si le résultat est un nombre complexe (contient "i")
+      if (
+        evaluatedExpression.toString().includes("i") ||
+        evaluatedExpression.toString().includes("infinity")
+      ) {
+        throw new Error("Imaginaire ou infini");
       }
-      setResult(abs(evaluate(expr)) < 1e-14 ? 0 : (evaluate(expr) as number));
+
+      setResult(
+        abs(evaluatedExpression) < 1e-14 ? 0 : (evaluatedExpression as number),
+      );
     } catch (error) {
       setResult("Error");
       console.error("Expression invalide :", error);
@@ -90,6 +131,9 @@ export default function Home() {
             resetExpression={resetExpression}
             isDegActive={isDegActive}
             handleDegActive={handleDegActive}
+            handleAC={handleAC}
+            handleCloseBracket={handleCloseBracket}
+            handleMultipleOperations={handleMultipleOperations}
           />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />

@@ -4,6 +4,7 @@ import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
+import { random } from "mathjs";
 interface DigitPadProps {
   isFxActive: boolean;
   expression: string;
@@ -15,8 +16,10 @@ interface DigitPadProps {
   resetExpression: () => void;
   handleDegActive: (value: string) => void;
   isDegActive: boolean;
+  handleAC: () => void;
+  handleCloseBracket: () => void;
+  handleMultipleOperations: (value: string) => void;
 }
-
 const DigitPad: React.FC<DigitPadProps> = ({
   isFxActive,
   expression,
@@ -28,6 +31,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
   resetExpression,
   handleDegActive,
   isDegActive,
+  handleAC,
+  handleCloseBracket,
+  handleMultipleOperations,
 }) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
@@ -56,8 +62,22 @@ const DigitPad: React.FC<DigitPadProps> = ({
 
   return (
     <div className="grid grid-cols-4 grid-rows-4 gap-2 sm:grid-cols-7">
-      <button className={classNames("fx", phoneDigitClass)}>{"("}</button>
-      <button className={classNames("fx", phoneDigitClass)}>{")"}</button>
+      <button
+        onClick={() => {
+          onInsert("()", 1);
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
+        {"("}
+      </button>
+      <button
+        onClick={() => {
+          handleCloseBracket();
+        }}
+        className={classNames("fx", phoneDigitClass)}
+      >
+        {")"}
+      </button>
       <button
         onClick={() => {
           onInsert("%", 1);
@@ -68,7 +88,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          handleIsEqualButton("non");
+          handleAC();
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -100,7 +120,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("/", 1);
+          isEqualButton ? handleMultipleOperations("/") : onInsert("/", 1);
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -132,7 +152,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("*", 1);
+          isEqualButton ? handleMultipleOperations("*") : onInsert("*", 1);
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -164,7 +184,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("-", 1);
+          isEqualButton ? handleMultipleOperations("-") : onInsert("-", 1);
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -198,7 +218,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("+", 1);
+          isEqualButton ? handleMultipleOperations("+") : onInsert("+", 1);
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -240,7 +260,8 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("sin()", 4);
+          isDegActive && onInsert("sin(pi/180*)", 11);
+          !isDegActive && onInsert("sin()", 4);
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-2",
@@ -250,6 +271,10 @@ const DigitPad: React.FC<DigitPadProps> = ({
         sin
       </button>
       <button
+        onClick={() => {
+          isDegActive && onInsert("180/pi*asin()", 12);
+          !isDegActive && onInsert("asin()", 5);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-2",
           phoneInvClass,
@@ -258,6 +283,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         sin<sup>-1</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("log()", 4);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-2",
           phoneNoInvClass,
@@ -266,6 +294,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         ln
       </button>
       <button
+        onClick={() => {
+          onInsert("pow(e,)", 6);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-2",
           phoneInvClass,
@@ -283,7 +314,8 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("cos()", 4);
+          isDegActive && onInsert("cos(pi/180*)", 11);
+          !isDegActive && onInsert("cos()", 4);
         }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-3",
@@ -293,6 +325,10 @@ const DigitPad: React.FC<DigitPadProps> = ({
         cos
       </button>
       <button
+        onClick={() => {
+          isDegActive && onInsert("180/pi*acos()", 12);
+          !isDegActive && onInsert("acos()", 5);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-3",
           phoneInvClass,
@@ -301,6 +337,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         cos<sup>-1</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("log(,10)", 4);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-3",
           phoneNoInvClass,
@@ -309,6 +348,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         log
       </button>
       <button
+        onClick={() => {
+          onInsert("pow(10,)", 7);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-3",
           phoneInvClass,
@@ -317,11 +359,18 @@ const DigitPad: React.FC<DigitPadProps> = ({
         10<sup>x</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("e", 1);
+        }}
         className={classNames("fx sm:col-start-1 sm:row-start-4", phoneFxClass)}
       >
         e
       </button>
       <button
+        onClick={() => {
+          isDegActive && onInsert("tan(pi/180*)", 11);
+          !isDegActive && onInsert("tan()", 4);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-4",
           phoneNoInvClass,
@@ -330,6 +379,10 @@ const DigitPad: React.FC<DigitPadProps> = ({
         tan
       </button>
       <button
+        onClick={() => {
+          isDegActive && onInsert("180/pi*atan()", 12);
+          !isDegActive && onInsert("atan()", 5);
+        }}
         className={classNames(
           "fx sm:col-start-2 sm:row-start-4",
           phoneInvClass,
@@ -338,6 +391,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         tan<sup>-1</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("sqrt()", 5);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-4",
           phoneNoInvClass,
@@ -346,6 +402,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         <TbSquareRoot />
       </button>
       <button
+        onClick={() => {
+          onInsert("^2", 2);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-4",
           phoneInvClass,
@@ -354,6 +413,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         x<sup>2</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("Ans", 3);
+        }}
         className={classNames(
           "fx sm:col-start-1 sm:row-start-5",
           phoneNoInvClass,
@@ -362,6 +424,10 @@ const DigitPad: React.FC<DigitPadProps> = ({
         Ans
       </button>
       <button
+        onClick={() => {
+          const randomNumb = random().toFixed(7).toString();
+          onInsert(randomNumb, 9);
+        }}
         className={classNames(
           "fx sm:col-start-1 sm:row-start-5",
           phoneInvClass,
@@ -370,11 +436,17 @@ const DigitPad: React.FC<DigitPadProps> = ({
         Rnd
       </button>
       <button
+        onClick={() => {
+          onInsert("pow(10,)", 7);
+        }}
         className={classNames("fx sm:col-start-2 sm:row-start-5", phoneFxClass)}
       >
         EXP
       </button>
       <button
+        onClick={() => {
+          onInsert("^", 1);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-5",
           phoneNoInvClass,
@@ -383,6 +455,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         x<sup>y</sup>
       </button>
       <button
+        onClick={() => {
+          onInsert("cbrt()", 5);
+        }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-5",
           phoneInvClass,

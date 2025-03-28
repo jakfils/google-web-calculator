@@ -33,7 +33,7 @@ const Screen: React.FC<ScreenProps> = ({
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
         <input
-          className="mt-3 w-full text-right text-2xl focus:outline-none"
+          className="mt-3 w-full truncate text-right text-2xl focus:outline-none"
           value={!isEqualButton ? expression : result}
           readOnly
         ></input>
