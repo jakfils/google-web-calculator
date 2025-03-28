@@ -121,8 +121,6 @@ export default function Home() {
         <div>
           <DigitPad
             isFxActive={isFxActive}
-            expression={expression}
-            result={result}
             handleResult={handleResult}
             isEqualButton={isEqualButton}
             handleIsEqualButton={handleEqualButton}
