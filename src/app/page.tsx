@@ -56,7 +56,8 @@ export default function Home() {
         value === "/" ||
         value === "^" ||
         value === "-" ||
-        value === "+";
+        value === "+" ||
+        value === "^2";
       const cleanPrev = prev === "0" && !keepZero ? "" : prev;
 
       const beforeCursor = cleanPrev.slice(0, cursorPosition);

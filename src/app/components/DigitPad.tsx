@@ -4,7 +4,7 @@ import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
-import {random } from "mathjs";
+import { random } from "mathjs";
 interface DigitPadProps {
   isFxActive: boolean;
   handleResult: () => void;
@@ -76,7 +76,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("%", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("%");
+          } else {
+            onInsert("%", 1);
+          }
         }}
         className={classNames("fx", phoneDigitClass)}
       >
@@ -258,7 +262,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("!", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("!");
+          } else {
+            onInsert("!", 1);
+          }
         }}
         className={classNames("fx sm:col-start-3 sm:row-start-1", phoneFxClass)}
       >
@@ -439,7 +447,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("^2", 2);
+          if (isEqualButton) {
+            handleMultipleOperations("^2");
+          } else {
+            onInsert("^2", 1);
+          }
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-4",
@@ -481,7 +493,11 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("^", 1);
+          if (isEqualButton) {
+            handleMultipleOperations("^");
+          } else {
+            onInsert("^", 1);
+          }
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-5",

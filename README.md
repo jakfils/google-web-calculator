@@ -1,3 +1,27 @@
+ajout de suite d'opérations pour !, %, y^x et x^2
+()
+sin(pi/180*)
+sin()
+180/pi*asin()
+asin()
+log()
+pow(e,)
+pi
+cos(pi/180*)
+cos()
+log(,10)
+pow(10,)
+tan(pi/180*)
+tan()
+180/pi*atan()
+atan()
+sqrt()
+^2
+Ans
+pow(10,)
+cbrt()
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
