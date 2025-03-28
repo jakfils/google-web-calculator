@@ -7,8 +7,6 @@ import { useState } from "react";
 import { random } from "mathjs";
 interface DigitPadProps {
   isFxActive: boolean;
-  expression: string;
-  result: number | string;
   handleResult: () => void;
   isEqualButton: boolean;
   handleIsEqualButton: (value: string) => void;
@@ -22,8 +20,6 @@ interface DigitPadProps {
 }
 const DigitPad: React.FC<DigitPadProps> = ({
   isFxActive,
-  expression,
-  result,
   handleResult,
   isEqualButton,
   handleIsEqualButton,
