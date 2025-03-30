@@ -39,6 +39,7 @@ The **Google Web Calculator** is a responsive, feature-rich calculator applicati
 - **Cursor-aware editing** (precise expression modification)
 - **Error handling** (invalid expressions show "Error")
 - **Clean display** (shows both input expression and result)
+- **Automatic dark/light mode** (adapts to system theme)
 
 ---
 
@@ -97,6 +98,10 @@ The **Google Web Calculator** is a responsive, feature-rich calculator applicati
   - Cursor position
   - Degree/Radian mode
   - FX (scientific mode) toggle on mobile
+
+### **Dark/Light Mode**
+
+- Automatically detects system color scheme (dark/light)
 
 ### **Math Evaluation**
 
