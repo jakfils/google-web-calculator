@@ -1,60 +1,153 @@
-ajout de suite d'opérations pour !, %, y^x et x^2
-()
-sin(pi/180*)
-sin()
-180/pi*asin()
-asin()
-log()
-pow(e,)
-pi
-cos(pi/180*)
-cos()
-log(,10)
-pow(10,)
-tan(pi/180*)
-tan()
-180/pi*atan()
-atan()
-sqrt()
-^2
-Ans
-pow(10,)
-cbrt()
+# Google Web Calculator (Next.js)
 
+## Overview
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+The **Google Web Calculator** is a responsive, feature-rich calculator application built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It replicates the functionality of Google's web calculator. The app supports both basic arithmetic and complex mathematical operations with a clean, intuitive interface.
 
-## Getting Started
+🔗 **Live Demo:** [https://google-web-calculator.vercel.app/](https://google-web-calculator.vercel.app/)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🧮 **Basic Operations**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Arithmetic:** `+`, `-`, `×`, `÷`
+- **Percentage calculations** (`%`)
+- **Decimal input** (`.`)
+- **Parentheses** (`( )`) for complex expressions
+- **Clear (AC)** and **backspace** functionality (planned feature)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🔬 **Advanced Scientific Functions**
 
-## Learn More
+- **Trigonometry:** `sin`, `cos`, `tan` (supports **Deg/Rad** modes)
+- **Inverse Trigonometry:** `asin`, `acos`, `atan`
+- **Logarithms:** `log` (base 10), `ln` (natural log)
+- **Exponents:** `e^x`, `10^x`, `x^y`
+- **Roots:** `√x` (square root), `∛x` (cube root)
+- **Constants:** `π` (Pi), `e` (Euler’s number)
+- **Random number generator** (`Rnd`)
+- **Factorial** (`x!`)
+- **Answer memory** (`Ans`)
 
-To learn more about Next.js, take a look at the following resources:
+### 🎨 **UI & UX Features**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Responsive design** (mobile & desktop optimized)
+- **Toggle between basic & scientific modes** (mobile)
+- **Degree/Radian mode** for trigonometric functions
+- **Inverse function toggle** (`Inv`)
+- **Cursor-aware editing** (precise expression modification)
+- **Error handling** (invalid expressions show "Error")
+- **Clean display** (shows both input expression and result)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠️ Technical Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Math Evaluation:** `math.js`
+- **Icons:** `react-icons`
+- **Deployment:** Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 Installation & Local Setup
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/jakfils/google-web-calculator.git
+   cd google-web-calculator
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. **Open in browser:**  
+   Visit `http://localhost:3000`
+
+---
+
+## 🔍 Key Implementation Details
+
+### **State Management**
+
+- Uses React’s `useState` for:
+  - Current expression
+  - Result
+  - Cursor position
+  - Degree/Radian mode
+  - FX (scientific mode) toggle on mobile
+
+### **Math Evaluation**
+
+- Safely evaluates expressions using `math.js` (`evaluate` function)
+- Handles errors (e.g., division by zero, imaginary numbers)
+
+### **Cursor & Editing Logic**
+
+- Tracks cursor position for precise insertion/deletion
+- Smart handling of parentheses and functions
+
+### **Responsive Design**
+
+- Mobile-friendly layout with a toggle between **basic** and **scientific** modes
+- Desktop shows all buttons at once
+
+---
+
+## 🎮 How to Use
+
+### **Basic Mode (Mobile/Desktop)**
+
+1. Enter numbers (`0-9`) and operators (`+`, `-`, `×`, `÷`).
+2. Use `( )` for complex expressions.
+3. Press `=` to compute the result.
+
+### **Scientific Mode (Toggle with "FX" on mobile)**
+
+- **Trigonometric Functions:** `sin`, `cos`, `tan` (switch between **Deg/Rad**)
+- **Inverse Functions:** Press `Inv` to access `sin⁻¹`, `cos⁻¹`, etc.
+- **Logs & Exponents:** `ln`, `log`, `e^x`, `10^x`
+- **Roots & Powers:** `√x`, `x²`, `x^y`
+
+---
+
+## ⚠️ Known Limitations
+
+- ❌ **No support for complex numbers** (shows "Error").
+- ❌ **No keyboard input** (click/touch only).
+- ❌ **No calculation history** (planned feature).
+
+---
+
+## 📜 License
+
+MIT License – Free to use, modify, and distribute.
+
+---
+
+## ✨ Credits
+
+Developed as a showcase of **Next.js + TypeScript** skills, inspired by Google’s web calculator.
+
+🚀 **Try it now:** [https://google-web-calculator.vercel.app/](https://google-web-calculator.vercel.app/)
