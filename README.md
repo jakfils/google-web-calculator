@@ -24,7 +24,7 @@ The **Google Web Calculator** is a responsive, feature-rich calculator applicati
 - **Inverse Trigonometry:** `asin`, `acos`, `atan`
 - **Logarithms:** `log` (base 10), `ln` (natural log)
 - **Exponents:** `e^x`, `10^x`, `x^y`
-- **Roots:** `√x` (square root), `∛x` (cube root)
+- **Roots:** `√x` (square root), `∛x` (nth root)
 - **Constants:** `π` (Pi), `e` (Euler’s number)
 - **Random number generator** (`Rnd`)
 - **Factorial** (`x!`)
