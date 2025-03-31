@@ -17,6 +17,7 @@ interface DigitPadProps {
   handleAC: () => void;
   handleCloseBracket: () => void;
   handleMultipleOperations: (value: string) => void;
+  handleNthRoot: () => void;
 }
 const DigitPad: React.FC<DigitPadProps> = ({
   isFxActive,
@@ -30,6 +31,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
   handleAC,
   handleCloseBracket,
   handleMultipleOperations,
+  handleNthRoot,
 }) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
@@ -96,6 +98,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
+          alert("Pressing this button may cause unexpected behavior");
           onInsert("7", 1);
         }}
         className={classNames("digit", phoneDigitClass)}
@@ -203,7 +206,9 @@ const DigitPad: React.FC<DigitPadProps> = ({
         <FaMinus />
       </button>
       <button
-        onClick={() => onInsert("0", 1)}
+        onClick={() => {
+          onInsert("0", 1);
+        }}
         className={classNames("digit", phoneDigitClass)}
       >
         0
@@ -374,7 +379,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("log(,10)", 4);
+          onInsert("log10()", 6);
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-3",
@@ -508,7 +513,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("cbrt()", 5);
+          handleNthRoot();
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-5",
