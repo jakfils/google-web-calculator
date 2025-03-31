@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { FaDivide, FaMinus, FaEquals, FaPlus } from "react-icons/fa6";
 import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
-import { TbSquareRoot, TbSquareRoot2 } from "react-icons/tb";
 import { useState } from "react";
 import { random } from "mathjs";
 interface DigitPadProps {
@@ -447,7 +446,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
           phoneNoInvClass,
         )}
       >
-        <TbSquareRoot />
+        √
       </button>
       <button
         onClick={() => {
@@ -519,8 +518,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
           phoneInvClass,
         )}
       >
-        <sup>y</sup>
-        <TbSquareRoot2 />
+        <sup>y</sup>√x
       </button>
     </div>
   );
