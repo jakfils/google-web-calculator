@@ -98,7 +98,6 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          alert("Pressing this button may cause unexpected behavior");
           onInsert("7", 1);
         }}
         className={classNames("digit", phoneDigitClass)}
