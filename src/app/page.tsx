@@ -66,7 +66,7 @@ export default function Home() {
     { value: "180/pi*atan()", offset: -1 },
     { value: "asin()", offset: -1 },
     { value: "atan()", offset: -1 },
-    { value: "log10()", offset: -1 },
+    { value: "logdix()", offset: -1 },
     { value: "pow(10,)", offset: -1 },
     { value: "tan(pi/180*)", offset: -1 },
     { value: "acos()", offset: -1 },
@@ -186,7 +186,6 @@ export default function Home() {
     });
   };
 
-
   // **********************************************************************************
 
   const handleMultipleOperations = (value: string) => {
@@ -241,9 +240,15 @@ export default function Home() {
   const handleResult = () => {
     try {
       const containAns = expression.includes("Ans");
-      const evaluatedExpression = containAns
-        ? evaluate(expression.replace(/Ans/g, `(${result.toString()})`))
-        : evaluate(expression);
+      const containsLogTen = expression.includes("logTen");
+      const evaluatedExpression =
+        containAns || containsLogTen
+          ? evaluate(
+              expression
+                .replace(/Ans/g, `(${result.toString()})`)
+                .replace(/logTen/g, "log10"),
+            )
+          : evaluate(expression);
       // Vérifier si le résultat est un nombre complexe (contient "i")
       if (
         evaluatedExpression.toString().includes("i") ||

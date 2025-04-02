@@ -377,7 +377,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("log10()", 6);
+          onInsert("logTen()", 7);
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-3",
