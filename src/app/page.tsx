@@ -66,7 +66,7 @@ export default function Home() {
     { value: "180/pi*atan()", offset: -1 },
     { value: "asin()", offset: -1 },
     { value: "atan()", offset: -1 },
-    { value: "logdix()", offset: -1 },
+    { value: "logTen()", offset: -1 },
     { value: "pow(10,)", offset: -1 },
     { value: "tan(pi/180*)", offset: -1 },
     { value: "acos()", offset: -1 },
