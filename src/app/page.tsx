@@ -4,27 +4,6 @@ import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 import { evaluate, abs } from "mathjs";
-const functionMappings = [
-  { value: "sin(pi/180*)", offset: -1 },
-  { value: "sin()", offset: -1 },
-  { value: "180/pi*asin()", offset: -1 },
-  { value: "asin()", offset: -1 },
-  { value: "log()", offset: -1 },
-  { value: "pow(e,)", offset: -1 },
-  { value: "pi", offset: 0 },
-  { value: "cos(pi/180*)", offset: -1 },
-  { value: "cos()", offset: -1 },
-  { value: "log10()", offset: -1 },
-  { value: "pow(10,)", offset: -1 },
-  { value: "tan(pi/180*)", offset: -1 },
-  { value: "tan()", offset: -1 },
-  { value: "180/pi*atan()", offset: -1 },
-  { value: "atan()", offset: -1 },
-  { value: "sqrt()", offset: -1 },
-  { value: "cbrt()", offset: -1 },
-  { value: "^2", offset: 0 },
-  { value: "Ans", offset: 0 },
-];
 
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
@@ -80,45 +59,41 @@ export default function Home() {
     });
   };
 
+  const functionMappings = [
+    // { value: "()", offset: -1 },
+    { value: "sin(pi/180*)", offset: -1 },
+    { value: "180/pi*asin()", offset: -1 },
+    { value: "180/pi*atan()", offset: -1 },
+    { value: "asin()", offset: -1 },
+    { value: "atan()", offset: -1 },
+    { value: "log10()", offset: -1 },
+    { value: "pow(10,)", offset: -1 },
+    { value: "tan(pi/180*)", offset: -1 },
+    { value: "acos()", offset: -1 },
+    { value: "sin()", offset: -1 },
+    { value: "cos(pi/180*)", offset: -1 },
+    { value: "cos()", offset: -1 },
+    { value: "log()", offset: -1 },
+    { value: "pow(e,)", offset: -1 },
+    { value: "pi", offset: 0 },
+    { value: "tan()", offset: -1 },
+    { value: "sqrt()", offset: -1 },
+    { value: "nthRoot()", offset: -1 },
+    { value: "^2", offset: 0 },
+    { value: "Ans", offset: 0 },
+  ];
+
+  // ******************************************************************************************
   const handleAC = () => {
     setExpression((prev) => {
-      // Si l'expression est vide ou juste "0", ne rien faire
-      if (prev === "" || prev === "0") {
-        setCursorPosition(1); // Positionner après le "0"
-        return "0";
-      }
+      if (prev.length === 0) return prev;
 
-      // Vérifier si le curseur est à l'intérieur d'une fonction
       const beforeCursor = prev.slice(0, cursorPosition);
       const afterCursor = prev.slice(cursorPosition);
 
-      // Cas spécial: si le caractère avant le curseur est une parenthèse fermante
-      if (beforeCursor.endsWith(")")) {
-        // Vérifier si cette parenthèse fait partie d'une fonction
-        for (const func of functionMappings) {
-          const funcValue = func.value;
+      if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
 
-          // Si la fonction contient des parenthèses
-          if (funcValue.includes("(") && funcValue.includes(")")) {
-            // Extraire la partie de la fonction jusqu'à la parenthèse fermante incluse
-            const closeParenIndex = funcValue.indexOf(")") + 1;
-            const funcWithParen = funcValue.slice(0, closeParenIndex);
-
-            // Vérifier si le texte avant le curseur se termine par la fonction avec parenthèses
-            if (beforeCursor.endsWith(funcWithParen)) {
-              // Calculer la nouvelle position du curseur en fonction de l'offset
-              // La position sera juste après la parenthèse ouvrante ou à un autre endroit selon l'offset
-              const openParenIndex = beforeCursor.lastIndexOf("(");
-              const newCursorPos =
-                openParenIndex + 1 + (func.offset === 0 ? 0 : func.offset);
-              setCursorPosition(newCursorPos);
-              return prev; // Ne pas modifier l'expression
-            }
-          }
-        }
-      }
-
-      // Parcourir les fonctions pour voir si le curseur est à l'intérieur d'une d'entre elles
+      // Vérifier si le curseur est à l'intérieur d'une fonction
       for (const func of functionMappings) {
         const funcValue = func.value;
 
@@ -155,22 +130,64 @@ export default function Home() {
         }
       }
 
-      // Si le curseur n'est pas dans une fonction, supprimer simplement un caractère
-      if (cursorPosition > 0) {
-        const newExpression = beforeCursor.slice(0, -1) + afterCursor;
-
-        if (newExpression === "") {
-          setCursorPosition(1); // Positionner après le "0"
-          return "0";
-        } else {
-          setCursorPosition(cursorPosition - 1);
-          return newExpression;
+      // Vérifier si le curseur est juste après une fonction complète sans parenthèses
+      for (let func of functionMappings.filter(
+        (f) => !f.value.includes("()"),
+      )) {
+        if (beforeCursor.endsWith(func.value)) {
+          setCursorPosition(cursorPosition - func.value.length);
+          return beforeCursor.slice(0, -func.value.length) + afterCursor;
         }
       }
 
-      return prev;
+      // Vérifier si le curseur est juste après une parenthèse fermante qui appartient à une fonction
+      const lastCloseParen = beforeCursor.lastIndexOf(")");
+      if (lastCloseParen !== -1 && lastCloseParen === beforeCursor.length - 1) {
+        const stack = [];
+        let functionStart = -1;
+
+        for (let i = lastCloseParen; i >= 0; i--) {
+          if (beforeCursor[i] === ")") stack.push(")");
+          else if (beforeCursor[i] === "(") {
+            stack.pop();
+            if (stack.length === 0) {
+              functionStart = i;
+              break;
+            }
+          }
+        }
+
+        if (functionStart !== -1) {
+          const functionNameMatch = beforeCursor
+            .slice(0, functionStart)
+            .match(/([a-z]+)$/i);
+          if (functionNameMatch && functionNameMatch.index !== undefined) {
+            setCursorPosition(functionNameMatch.index);
+            return prev.slice(0, functionNameMatch.index) + afterCursor;
+          }
+        }
+      }
+
+      // Vérifier si le curseur est avant une parenthèse fermante d'une fonction vide
+      for (let func of functionMappings.filter((f) => f.value.includes("()"))) {
+        const funcBase = func.value.replace("()", "");
+        const regex = new RegExp(`(${funcBase}\\()$`);
+        if (beforeCursor.match(regex) && afterCursor.startsWith(")")) {
+          setCursorPosition(cursorPosition - funcBase.length - 1);
+          return (
+            beforeCursor.slice(0, -funcBase.length - 1) + afterCursor.slice(1)
+          );
+        }
+      }
+
+      // Suppression caractère par caractère par défaut
+      setCursorPosition(cursorPosition - 1);
+      return beforeCursor.slice(0, -1) + afterCursor;
     });
   };
+
+
+  // **********************************************************************************
 
   const handleMultipleOperations = (value: string) => {
     handleEqualButton("none");
