@@ -60,25 +60,26 @@ export default function Home() {
   };
 
   const functionMappings = [
-    // { value: "()", offset: -1 },
-    { value: "sin(pi/180*)", offset: -1 },
     { value: "180/pi*asin()", offset: -1 },
+    { value: "180/pi*acos()", offset: -1 },
     { value: "180/pi*atan()", offset: -1 },
-    { value: "asin()", offset: -1 },
-    { value: "atan()", offset: -1 },
-    { value: "logTen()", offset: -1 },
-    { value: "pow(10,)", offset: -1 },
-    { value: "tan(pi/180*)", offset: -1 },
-    { value: "acos()", offset: -1 },
-    { value: "sin()", offset: -1 },
+    { value: "sin(pi/180*)", offset: -1 },
     { value: "cos(pi/180*)", offset: -1 },
+    { value: "tan(pi/180*)", offset: -1 },
+    { value: "asin()", offset: -1 },
+    { value: "acos()", offset: -1 },
+    { value: "atan()", offset: -1 },
+    { value: "sin()", offset: -1 },
     { value: "cos()", offset: -1 },
-    { value: "log()", offset: -1 },
-    { value: "pow(e,)", offset: -1 },
-    { value: "pi", offset: 0 },
     { value: "tan()", offset: -1 },
+    { value: "pow(10,)", offset: -1 },
+    { value: "pow(e,)", offset: -1 },
+    { value: "logTen()", offset: -1 },
+    { value: "log()", offset: -1 },
     { value: "sqrt()", offset: -1 },
-    { value: "nthRoot()", offset: -1 },
+    { value: "()", offset: -1 },
+    { value: "pi", offset: 0 },
+    // { value: "nthRoot()", offset: -1 },
     { value: "^2", offset: 0 },
     { value: "Ans", offset: 0 },
   ];
@@ -140,49 +141,20 @@ export default function Home() {
         }
       }
 
-      // Vérifier si le curseur est juste après une parenthèse fermante qui appartient à une fonction
-      const lastCloseParen = beforeCursor.lastIndexOf(")");
-      if (lastCloseParen !== -1 && lastCloseParen === beforeCursor.length - 1) {
-        const stack = [];
-        let functionStart = -1;
-
-        for (let i = lastCloseParen; i >= 0; i--) {
-          if (beforeCursor[i] === ")") stack.push(")");
-          else if (beforeCursor[i] === "(") {
-            stack.pop();
-            if (stack.length === 0) {
-              functionStart = i;
-              break;
-            }
-          }
-        }
-
-        if (functionStart !== -1) {
-          const functionNameMatch = beforeCursor
-            .slice(0, functionStart)
-            .match(/([a-z]+)$/i);
-          if (functionNameMatch && functionNameMatch.index !== undefined) {
-            setCursorPosition(functionNameMatch.index);
-            return prev.slice(0, functionNameMatch.index) + afterCursor;
-          }
-        }
-      }
-
-      // Vérifier si le curseur est avant une parenthèse fermante d'une fonction vide
-      for (let func of functionMappings.filter((f) => f.value.includes("()"))) {
-        const funcBase = func.value.replace("()", "");
-        const regex = new RegExp(`(${funcBase}\\()$`);
-        if (beforeCursor.match(regex) && afterCursor.startsWith(")")) {
-          setCursorPosition(cursorPosition - funcBase.length - 1);
-          return (
-            beforeCursor.slice(0, -funcBase.length - 1) + afterCursor.slice(1)
-          );
-        }
-      }
-
       // Suppression caractère par caractère par défaut
-      setCursorPosition(cursorPosition - 1);
-      return beforeCursor.slice(0, -1) + afterCursor;
+      // Si le curseur n'est pas dans une fonction, supprimer simplement un caractère
+      if (cursorPosition > 0) {
+        const newExpression = beforeCursor.slice(0, -1) + afterCursor;
+
+        if (newExpression === "") {
+          setCursorPosition(1); // Positionner après le "0"
+          return "0";
+        } else {
+          setCursorPosition(cursorPosition - 1);
+          return newExpression;
+        }
+      }
+      return prev;
     });
   };
 
