@@ -79,9 +79,9 @@ export default function Home() {
     "sqrt()",
     "()",
     "pi",
-    // "nthRoot()",
     "^2",
     "Ans",
+    // "nthRoot()",
   ];
 
   // ******************************************************************************************
@@ -93,6 +93,44 @@ export default function Home() {
       const afterCursor = prev.slice(cursorPosition);
 
       if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
+
+      // Nouveau bloc: Vérifier si le curseur est juste après une parenthèse fermante
+      // et que cette parenthèse correspond à une fonction complète
+      if (beforeCursor.endsWith(")")) {
+        let openParenIndex = -1;
+        let parenCount = 1;
+
+        // Parcourir à rebours pour trouver la parenthèse ouvrante correspondante
+        for (let i = beforeCursor.length - 2; i >= 0; i--) {
+          if (beforeCursor[i] === ")") parenCount++;
+          if (beforeCursor[i] === "(") parenCount--;
+
+          if (parenCount === 0) {
+            openParenIndex = i;
+            break;
+          }
+        }
+
+        if (openParenIndex !== -1) {
+          // Vérifier si avant la parenthèse ouvrante il y a une de nos fonctions
+          for (const funcValue of functionMappings.filter((f) =>
+            f.includes("("),
+          )) {
+            const funcName = funcValue.split("(")[0];
+            if (beforeCursor.slice(0, openParenIndex).endsWith(funcName)) {
+              // Supprimer toute la fonction
+              const newBeforeCursor = beforeCursor.slice(
+                0,
+                openParenIndex - funcName.length,
+              );
+              const newExpression = newBeforeCursor + afterCursor;
+
+              setCursorPosition(newBeforeCursor.length);
+              return newExpression === "" ? "0" : newExpression;
+            }
+          }
+        }
+      }
 
       // Vérifier si le curseur est à l'intérieur d'une fonction
       for (const funcValue of functionMappings) {
