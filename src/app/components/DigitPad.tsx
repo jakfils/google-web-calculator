@@ -89,6 +89,10 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
+          if (isEqualButton) {
+            resetExpression();
+            handleIsEqualButton("none");
+          }
           handleAC();
         }}
         className={classNames("fx", phoneDigitClass)}
