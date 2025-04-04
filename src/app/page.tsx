@@ -93,12 +93,17 @@ export default function Home() {
       const afterCursor = prev.slice(cursorPosition);
 
       if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
+
+      // Détection spéciale pour nthRoot() avec gestion d'imbrication
       const nthRootIndex: number = findNthRootStart(prev, cursorPos);
       if (nthRootIndex !== -1) {
-        const closingIndex = findMatchingClosingParen(prev, nthRootIndex + 8); // +8 pour "nthRoot("
+        const closingIndex: number = findMatchingClosingParen(
+          prev,
+          nthRootIndex + 8,
+        ); // +8 pour "nthRoot("
         if (closingIndex !== -1) {
-          const newExpr =
-            prev.slice(0, nthRootIndex) + prev.slice(closingIndex + 1);
+          const newExpr: string =
+            prev.substring(0, nthRootIndex) + prev.substring(closingIndex + 1);
           setCursorPosition(nthRootIndex);
           return newExpr === "" ? "0" : newExpr;
         }
@@ -201,11 +206,11 @@ export default function Home() {
     });
   };
 
-  // Helper typé pour trouver le début de nthRoot
+  // Helper typé avec substring() au lieu de substr()
   function findNthRootStart(expr: string, cursorPos: number): number {
-    let index: number = cursorPos - 1;
+    let index: number = Math.min(cursorPos - 1, expr.length - 1);
     while (index >= 0) {
-      if (expr.substr(index, 8) === "nthRoot(") {
+      if (expr.substring(index, index + 8) === "nthRoot(") {
         return index;
       }
       index--;
@@ -213,7 +218,7 @@ export default function Home() {
     return -1;
   }
 
-  // Helper typé pour trouver la parenthèse fermante correspondante
+  // Helper typé inchangé
   function findMatchingClosingParen(expr: string, openPos: number): number {
     let parenCount: number = 1;
     for (let i: number = openPos + 1; i < expr.length; i++) {
