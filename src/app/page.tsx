@@ -60,28 +60,28 @@ export default function Home() {
   };
 
   const functionMappings = [
-    { value: "180/pi*asin()", offset: -1 },
-    { value: "180/pi*acos()", offset: -1 },
-    { value: "180/pi*atan()", offset: -1 },
-    { value: "sin(pi/180*)", offset: -1 },
-    { value: "cos(pi/180*)", offset: -1 },
-    { value: "tan(pi/180*)", offset: -1 },
-    { value: "asin()", offset: -1 },
-    { value: "acos()", offset: -1 },
-    { value: "atan()", offset: -1 },
-    { value: "sin()", offset: -1 },
-    { value: "cos()", offset: -1 },
-    { value: "tan()", offset: -1 },
-    { value: "pow(10,)", offset: -1 },
-    { value: "pow(e,)", offset: -1 },
-    { value: "logTen()", offset: -1 },
-    { value: "log()", offset: -1 },
-    { value: "sqrt()", offset: -1 },
-    { value: "()", offset: -1 },
-    { value: "pi", offset: 0 },
-    // { value: "nthRoot()", offset: -1 },
-    { value: "^2", offset: 0 },
-    { value: "Ans", offset: 0 },
+    "180/pi*asin()",
+    "180/pi*acos()",
+    "180/pi*atan()",
+    "sin(pi/180*)",
+    "cos(pi/180*)",
+    "tan(pi/180*)",
+    "asin()",
+    "acos()",
+    "atan()",
+    "sin()",
+    "cos()",
+    "tan()",
+    "pow(10,)",
+    "pow(e,)",
+    "logTen()",
+    "log()",
+    "sqrt()",
+    "()",
+    "pi",
+    // "nthRoot()",
+    "^2",
+    "Ans",
   ];
 
   // ******************************************************************************************
@@ -95,9 +95,7 @@ export default function Home() {
       if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
 
       // Vérifier si le curseur est à l'intérieur d'une fonction
-      for (const func of functionMappings) {
-        const funcValue = func.value;
-
+      for (const funcValue of functionMappings) {
         // Vérifier différentes positions possibles du curseur dans la fonction
         for (let i = 1; i <= funcValue.length; i++) {
           const funcStart = funcValue.slice(0, i);
@@ -132,12 +130,10 @@ export default function Home() {
       }
 
       // Vérifier si le curseur est juste après une fonction complète sans parenthèses
-      for (let func of functionMappings.filter(
-        (f) => !f.value.includes("()"),
-      )) {
-        if (beforeCursor.endsWith(func.value)) {
-          setCursorPosition(cursorPosition - func.value.length);
-          return beforeCursor.slice(0, -func.value.length) + afterCursor;
+      for (let func of functionMappings.filter((f) => !f.includes("("))) {
+        if (beforeCursor.endsWith(func)) {
+          setCursorPosition(cursorPosition - func.length);
+          return beforeCursor.slice(0, -func.length) + afterCursor;
         }
       }
 
