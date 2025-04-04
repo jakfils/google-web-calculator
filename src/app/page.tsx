@@ -181,7 +181,7 @@ export default function Home() {
       }
 
       // Vérifier si le curseur est juste après une fonction complète sans parenthèses
-      for (let func of functionMappings.filter((f) => !f.includes("("))) {
+      for (const func of functionMappings.filter((f) => !f.includes("("))) {
         if (beforeCursor.endsWith(func)) {
           setCursorPosition(cursorPosition - func.length);
           return beforeCursor.slice(0, -func.length) + afterCursor;
