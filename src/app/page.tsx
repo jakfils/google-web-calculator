@@ -88,12 +88,21 @@ export default function Home() {
   const handleAC = () => {
     setExpression((prev) => {
       if (prev.length === 0) return prev;
-
+      const cursorPos: number = cursorPosition;
       const beforeCursor = prev.slice(0, cursorPosition);
       const afterCursor = prev.slice(cursorPosition);
 
       if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
-
+      const nthRootIndex: number = findNthRootStart(prev, cursorPos);
+      if (nthRootIndex !== -1) {
+        const closingIndex = findMatchingClosingParen(prev, nthRootIndex + 8); // +8 pour "nthRoot("
+        if (closingIndex !== -1) {
+          const newExpr =
+            prev.slice(0, nthRootIndex) + prev.slice(closingIndex + 1);
+          setCursorPosition(nthRootIndex);
+          return newExpr === "" ? "0" : newExpr;
+        }
+      }
       // Nouveau bloc: Vérifier si le curseur est juste après une parenthèse fermante
       // et que cette parenthèse correspond à une fonction complète
       if (beforeCursor.endsWith(")")) {
@@ -191,6 +200,29 @@ export default function Home() {
       return prev;
     });
   };
+
+  // Helper typé pour trouver le début de nthRoot
+  function findNthRootStart(expr: string, cursorPos: number): number {
+    let index: number = cursorPos - 1;
+    while (index >= 0) {
+      if (expr.substr(index, 8) === "nthRoot(") {
+        return index;
+      }
+      index--;
+    }
+    return -1;
+  }
+
+  // Helper typé pour trouver la parenthèse fermante correspondante
+  function findMatchingClosingParen(expr: string, openPos: number): number {
+    let parenCount: number = 1;
+    for (let i: number = openPos + 1; i < expr.length; i++) {
+      if (expr[i] === "(") parenCount++;
+      if (expr[i] === ")") parenCount--;
+      if (parenCount === 0) return i;
+    }
+    return -1;
+  }
 
   // **********************************************************************************
 
