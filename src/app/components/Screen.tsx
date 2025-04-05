@@ -2,16 +2,18 @@
 import { useEffect, useRef } from "react";
 import { MdHistory } from "react-icons/md";
 interface ScreenProps {
-  result: number|string;
+  result: number | string;
   expression: string;
   isEqualButton: boolean;
   cursorPosition: number;
+  displayedExpession: string;
 }
 const Screen: React.FC<ScreenProps> = ({
   result,
   expression,
   isEqualButton,
   cursorPosition,
+  displayedExpession,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,11 +33,9 @@ const Screen: React.FC<ScreenProps> = ({
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
-        <input
-          className="mt-3 w-full truncate text-right text-2xl focus:outline-none"
-          value={!isEqualButton ? expression : result}
-          readOnly
-        ></input>
+        <div className="mt-3 w-full truncate text-right text-2xl focus:outline-none">
+          {!isEqualButton ? expression : result}
+        </div>
       </div>
     </div>
   );
