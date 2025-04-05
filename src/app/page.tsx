@@ -8,6 +8,7 @@ import { evaluate, abs } from "mathjs";
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
   const [expression, setExpression] = useState<string>("0");
+  const [displayedExpression, setDisplayedExpression] = useState<string>("0");
   const [result, setResult] = useState<number | string>(0);
   const [isEqualButton, SetIsEqualButton] = useState<boolean>(false);
   const [cursorPosition, setCursorPosition] = useState<number>(
@@ -56,6 +57,18 @@ export default function Home() {
       }
 
       return newExpression;
+    });
+  };
+
+  const handleDisplayedExpression = (expression: string) => {
+    setDisplayedExpression(() => {
+      return expression
+        .replaceAll("180/pi*", "")
+        .replaceAll("pi/180*", "")
+        .replaceAll("180/pi*", "")
+        .replaceAll("sqrt", "√")
+        .replaceAll("*", "×")
+        .replaceAll("/", "÷");
     });
   };
 
@@ -139,6 +152,7 @@ export default function Home() {
               const newExpression = newBeforeCursor + afterCursor;
 
               setCursorPosition(newBeforeCursor.length);
+              
               return newExpression === "" ? "0" : newExpression;
             }
           }
@@ -234,6 +248,7 @@ export default function Home() {
     handleEqualButton("none");
     setExpression(result.toString() + value);
     setCursorPosition(result.toString().length + 1);
+    handleDisplayedExpression(result.toString() + value);
   };
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
@@ -271,7 +286,7 @@ export default function Home() {
 
       const newCursorPos = beforeCursor.length + offset;
       setCursorPosition(newCursorPos);
-
+      handleDisplayedExpression(newExpression);
       return newExpression;
     });
   };
@@ -317,6 +332,7 @@ export default function Home() {
             expression={expression}
             isEqualButton={isEqualButton}
             cursorPosition={cursorPosition}
+            displayedExpession={displayedExpression}
           />
         </div>
         <div>
@@ -333,6 +349,9 @@ export default function Home() {
             handleCloseBracket={handleCloseBracket}
             handleMultipleOperations={handleMultipleOperations}
             handleNthRoot={handleNthRoot}
+            displayedExpression={displayedExpression}
+            handleDisplayedExpression={handleDisplayedExpression}
+            expression={expression}
           />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />

@@ -36,6 +36,9 @@ const Screen: React.FC<ScreenProps> = ({
         <div className="mt-3 w-full truncate text-right text-2xl focus:outline-none">
           {!isEqualButton ? expression : result}
         </div>
+        <div className="mt-3 w-full truncate text-right text-2xl focus:outline-none">
+          {displayedExpession}
+        </div>
       </div>
     </div>
   );
