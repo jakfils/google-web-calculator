@@ -342,7 +342,7 @@ export default function Home() {
             expression={expression}
             isEqualButton={isEqualButton}
             cursorPosition={cursorPosition}
-            displayedExpession={displayedExpression}
+            displayedExpression={displayedExpression}
           />
         </div>
         <div>

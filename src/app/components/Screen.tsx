@@ -6,12 +6,12 @@ interface ScreenProps {
   expression: string;
   isEqualButton: boolean;
   cursorPosition: number;
-  displayedExpession: string;
+  displayedExpression: string;
 }
 const Screen: React.FC<ScreenProps> = ({
   result,
   isEqualButton,
-  displayedExpession,
+  displayedExpression,
 }) => {
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
@@ -23,7 +23,7 @@ const Screen: React.FC<ScreenProps> = ({
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
         <div className="mt-3 w-full truncate text-right text-2xl">
-          {!isEqualButton ? displayedExpession : result}
+          {!isEqualButton ? displayedExpression : result}
         </div>
       </div>
     </div>
