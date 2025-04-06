@@ -16,7 +16,7 @@ The **Google Web Calculator** is a responsive, feature-rich calculator applicati
 - **Percentage calculations** (`%`)
 - **Decimal input** (`.`)
 - **Parentheses** (`( )`) for complex expressions
-- **Clear (AC)** and **backspace** functionality (planned feature)
+- **Clear (AC)** and **backspace** functionality
 
 ### 🔬 **Advanced Scientific Functions**
 
