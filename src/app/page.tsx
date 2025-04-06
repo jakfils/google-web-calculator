@@ -274,7 +274,6 @@ export default function Home() {
         value === "%" ||
         value === "/" ||
         value === "^" ||
-        value === "-" ||
         value === "+" ||
         value === "^2";
       const cleanPrev = prev === "0" && !keepZero ? "" : prev;
