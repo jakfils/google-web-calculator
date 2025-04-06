@@ -18,7 +18,7 @@ interface DigitPadProps {
   handleMultipleOperations: (value: string) => void;
   handleNthRoot: () => void;
   displayedExpression: string;
-  handleDisplayedExpression: (expression: string) => void;
+  // handleDisplayedExpression: (expression: string) => void;
   expression: string;
 }
 const DigitPad: React.FC<DigitPadProps> = ({
@@ -35,7 +35,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
   handleMultipleOperations,
   handleNthRoot,
   displayedExpression,
-  handleDisplayedExpression,
+  // handleDisplayedExpression,
   expression,
 }) => {
   const [isInvActive, setIsInvActive] = useState(false);
@@ -387,7 +387,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
       </button>
       <button
         onClick={() => {
-          onInsert("logTen()", 7);
+          onInsert("LgTen()", 6);
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-3",

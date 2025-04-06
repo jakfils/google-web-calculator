@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
@@ -60,17 +60,20 @@ export default function Home() {
     });
   };
 
-  const handleDisplayedExpression = (expression: string) => {
-    setDisplayedExpression(() => {
-      return expression
+  useEffect(() => {
+    setDisplayedExpression(
+      expression
         .replaceAll("180/pi*", "")
         .replaceAll("pi/180*", "")
         .replaceAll("180/pi*", "")
         .replaceAll("sqrt", "√")
         .replaceAll("*", "×")
-        .replaceAll("/", "÷");
-    });
-  };
+        .replaceAll("/", "÷")
+        .replaceAll("pi", "π")
+        .replaceAll("log", "ln")
+        .replaceAll("LgTen", "log"),
+    );
+  }, [expression]);
 
   const functionMappings = [
     "180/pi*asin()",
@@ -87,7 +90,7 @@ export default function Home() {
     "tan()",
     "pow(10,)",
     "pow(e,)",
-    "logTen()",
+    "LgTen()",
     "log()",
     "sqrt()",
     "()",
@@ -152,7 +155,7 @@ export default function Home() {
               const newExpression = newBeforeCursor + afterCursor;
 
               setCursorPosition(newBeforeCursor.length);
-              
+
               return newExpression === "" ? "0" : newExpression;
             }
           }
@@ -248,7 +251,6 @@ export default function Home() {
     handleEqualButton("none");
     setExpression(result.toString() + value);
     setCursorPosition(result.toString().length + 1);
-    handleDisplayedExpression(result.toString() + value);
   };
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
@@ -286,7 +288,6 @@ export default function Home() {
 
       const newCursorPos = beforeCursor.length + offset;
       setCursorPosition(newCursorPos);
-      handleDisplayedExpression(newExpression);
       return newExpression;
     });
   };
@@ -297,13 +298,13 @@ export default function Home() {
   const handleResult = () => {
     try {
       const containAns = expression.includes("Ans");
-      const containsLogTen = expression.includes("logTen");
+      const containsLogTen = expression.includes("LgTen");
       const evaluatedExpression =
         containAns || containsLogTen
           ? evaluate(
               expression
                 .replace(/Ans/g, `(${result.toString()})`)
-                .replace(/logTen/g, "log10"),
+                .replace(/LgTen/g, "log10"),
             )
           : evaluate(expression);
       // Vérifier si le résultat est un nombre complexe (contient "i")
@@ -350,7 +351,6 @@ export default function Home() {
             handleMultipleOperations={handleMultipleOperations}
             handleNthRoot={handleNthRoot}
             displayedExpression={displayedExpression}
-            handleDisplayedExpression={handleDisplayedExpression}
             expression={expression}
           />
         </div>
