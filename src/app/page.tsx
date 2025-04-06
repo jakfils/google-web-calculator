@@ -38,9 +38,9 @@ export default function Home() {
     setExpression((prev) => {
       const beforeCursor = prev.slice(0, cursorPosition);
       const afterCursor = prev.slice(cursorPosition);
-      const number = beforeCursor.match(/\d+$/);
+      const match = beforeCursor.match(/(-?\d*\.?\d+|e|pi)$/);
       let newExpression = beforeCursor + afterCursor;
-      if (number && isEqualButton) {
+      if (match && isEqualButton) {
         if (result !== "Error") {
           newExpression = "nthRoot(" + result.toString() + ",)";
           const newCursorPos = result.toString().length + 9;
@@ -50,11 +50,11 @@ export default function Home() {
           setCursorPosition(10);
         }
       }
-      if (number && !isEqualButton) {
+      if (match && !isEqualButton) {
         newExpression =
-          beforeCursor.slice(0, -number.toString().length) +
+          beforeCursor.slice(0, -match[0].toString().length) +
           "nthRoot(" +
-          number +
+          match[0] +
           ",)" +
           afterCursor;
         const newCursorPos = beforeCursor.length + 9;
