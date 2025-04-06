@@ -41,9 +41,15 @@ export default function Home() {
       const number = beforeCursor.match(/\d+$/);
       let newExpression = beforeCursor + afterCursor;
       if (number && isEqualButton) {
-        newExpression = "nthRoot(" + result.toString() + ",)";
-        const newCursorPos = result.toString().length + 9;
-        setCursorPosition(newCursorPos);
+        if (result !== "Error") {
+          newExpression = "nthRoot(" + result.toString() + ",)";
+          const newCursorPos = result.toString().length + 9;
+          setCursorPosition(newCursorPos);
+        } else {
+          newExpression = "nthRoot(0,)";
+          const newCursorPos = 10;
+          setCursorPosition(newCursorPos);
+        }
       }
       if (number && !isEqualButton) {
         newExpression =
