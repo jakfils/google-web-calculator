@@ -17,9 +17,6 @@ interface DigitPadProps {
   handleCloseBracket: () => void;
   handleMultipleOperations: (value: string) => void;
   handleNthRoot: () => void;
-  displayedExpression: string;
-  // handleDisplayedExpression: (expression: string) => void;
-  expression: string;
 }
 const DigitPad: React.FC<DigitPadProps> = ({
   isFxActive,
@@ -34,9 +31,6 @@ const DigitPad: React.FC<DigitPadProps> = ({
   handleCloseBracket,
   handleMultipleOperations,
   handleNthRoot,
-  displayedExpression,
-  // handleDisplayedExpression,
-  expression,
 }) => {
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {

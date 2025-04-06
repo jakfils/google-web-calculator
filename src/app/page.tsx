@@ -360,8 +360,6 @@ export default function Home() {
             handleCloseBracket={handleCloseBracket}
             handleMultipleOperations={handleMultipleOperations}
             handleNthRoot={handleNthRoot}
-            displayedExpression={displayedExpression}
-            expression={expression}
           />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />
