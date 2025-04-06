@@ -10,20 +10,9 @@ interface ScreenProps {
 }
 const Screen: React.FC<ScreenProps> = ({
   result,
-  expression,
   isEqualButton,
-  cursorPosition,
   displayedExpession,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.selectionStart = cursorPosition;
-      inputRef.current.selectionEnd = cursorPosition;
-      inputRef.current.focus(); // Garde le focus automatiquement
-    }
-  }, [cursorPosition, expression]); // Mise à jour à chaque modification
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
       <div>
@@ -33,11 +22,8 @@ const Screen: React.FC<ScreenProps> = ({
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
-        <div className="mt-3 w-full truncate text-right text-2xl focus:outline-none">
-          {!isEqualButton ? expression : result}
-        </div>
-        <div className="mt-3 w-full truncate text-right text-2xl focus:outline-none">
-          {displayedExpession}
+        <div className="mt-3 w-full truncate text-right text-2xl">
+          {!isEqualButton ? displayedExpession : result}
         </div>
       </div>
     </div>
