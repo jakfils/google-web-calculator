@@ -47,8 +47,7 @@ export default function Home() {
           setCursorPosition(newCursorPos);
         } else {
           newExpression = "nthRoot(0,)";
-          const newCursorPos = 10;
-          setCursorPosition(newCursorPos);
+          setCursorPosition(10);
         }
       }
       if (number && !isEqualButton) {
@@ -255,8 +254,13 @@ export default function Home() {
 
   const handleMultipleOperations = (value: string) => {
     handleEqualButton("none");
-    setExpression(result.toString() + value);
-    setCursorPosition(result.toString().length + 1);
+    if (result !== "Error") {
+      setExpression(result.toString() + value);
+      setCursorPosition(result.toString().length + 1);
+    } else {
+      setExpression("0" + value);
+      setCursorPosition(2);
+    }
   };
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
