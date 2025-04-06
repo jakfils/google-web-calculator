@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { MdHistory } from "react-icons/md";
 interface ScreenProps {
   result: number | string;
