@@ -292,7 +292,6 @@ export default function Home() {
     setExpression((prev) => {
       handleEqualButton("none");
 
-      // Vérifier si la première value est "*" ou "!"
       const keepZero =
         value === "*" ||
         value === "!" ||
@@ -302,18 +301,35 @@ export default function Home() {
         value === "^" ||
         value === "+" ||
         value === "^2";
+
       const cleanPrev = prev === "0" && !keepZero ? "" : prev;
 
       const beforeCursor = cleanPrev.slice(0, cursorPosition);
       const afterCursor = cleanPrev.slice(cursorPosition);
 
       const lastChar = beforeCursor.slice(-1);
-      // const isLastOperator = /[+\-*/]/.test(lastChar);
+      // const lastThreeChars = beforeCursor.slice(-3);
+      const lastTwoChars = beforeCursor.slice(-2);
+
       const isLastOperator = ["+", "-", "*", "/", "^"].includes(lastChar);
-      // const isNewOperator = /[+\-*/]/.test(value);
       const isNewOperator = ["+", "-", "*", "/", "^"].includes(value);
 
-      let newExpression = beforeCursor + value + afterCursor;
+      // Vérifie si le dernier élément est "pi", "e" ou "%" (et non suivi d’un opérateur)
+      const endsWithPi = lastTwoChars === "pi";
+      const endsWithE = lastChar === "e";
+      const endsWithPercent = lastChar === "%";
+
+      const needsMultiplication =
+        (endsWithPi || endsWithE || endsWithPercent) && !isNewOperator;
+
+      // Si c’est "pi", on remonte de 2 caractères, sinon 1 seul
+      // const prefixLength = endsWithPi ? 2 : 1;
+
+      const beforeInsert = needsMultiplication
+        ? beforeCursor + "*"
+        : beforeCursor;
+
+      let newExpression = beforeInsert + value + afterCursor;
 
       if (isLastOperator && isNewOperator) {
         if (!(lastChar === "*" && value === "-")) {
@@ -321,11 +337,14 @@ export default function Home() {
         }
       }
 
-      const newCursorPos = beforeCursor.length + offset;
+      const newCursorPos =
+        beforeCursor.length + (needsMultiplication ? 1 : 0) + offset;
+
       setCursorPosition(newCursorPos);
       return newExpression;
     });
   };
+
 
   const handleFx = (value: string) => {
     setIsFxActive(value === "fx");
