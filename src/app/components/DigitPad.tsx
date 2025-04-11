@@ -458,7 +458,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
           if (isEqualButton) {
             handleMultipleOperations("^2");
           } else {
-            onInsert("^2", 1);
+            onInsert("^2", 2);
           }
         }}
         className={classNames(

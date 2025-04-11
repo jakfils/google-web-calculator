@@ -24,6 +24,13 @@
 }
 
 
+@layer base {
+  .katex .mord {
+    font-family: var(--font-open-sans), sans-serif !important;
+    font-style: normal !important;
+  }
+}
+
 @layer components {
   .digit {
     background-color: var(--digit-bg-color);

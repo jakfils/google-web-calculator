@@ -66,18 +66,34 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setDisplayedExpression(
-      expression
-        .replaceAll("180/pi*", "")
-        .replaceAll("pi/180*", "")
-        .replaceAll("180/pi*", "")
-        .replaceAll("sqrt", "√")
-        .replaceAll("*", "×")
-        .replaceAll("/", "÷")
-        .replaceAll("pi", "π")
-        .replaceAll("log", "ln")
-        .replaceAll("LgTen", "log"),
-    );
+    const formatted = expression
+      .replace(
+        /\^([^()\s+\-*/^{]*)(\(([^()]*|\([^()]*\))*\))?/g,
+        (_match, simplePart, parenPart) => {
+          const content = (simplePart || "") + (parenPart || "");
+          return `^{${content}}`;
+        },
+      )
+      // Gère pow(10, ...) avec des parenthèses imbriquées
+      .replace(
+        /pow\(10\s*,\s*((?:[^()]*|\([^()]*\))*)\)/g,
+        (_match, b) => `10^{${b || ""}}`,
+      )
+      // Gère pow(e, ...) avec des parenthèses imbriquées
+      .replace(
+        /pow\(e\s*,\s*((?:[^()]*|\([^()]*\))*)\)/g,
+        (_match, b) => `e^{${b || ""}}`,
+      )
+      .replaceAll("180/pi*", "")
+      .replaceAll("pi/180*", "")
+      .replaceAll("sqrt", "√")
+      .replaceAll("*", "×")
+      .replaceAll("/", "÷")
+      .replaceAll("pi", "π")
+      .replaceAll("log", "ln")
+      .replaceAll("LgTen", "log");
+
+    setDisplayedExpression(formatted);
   }, [expression]);
 
   const functionMappings = [

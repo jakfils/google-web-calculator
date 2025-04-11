@@ -1,5 +1,7 @@
 "use client";
 import { MdHistory } from "react-icons/md";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 interface ScreenProps {
   result: number | string;
   expression: string;
@@ -11,7 +13,13 @@ const Screen: React.FC<ScreenProps> = ({
   result,
   isEqualButton,
   displayedExpression,
+  expression,
 }) => {
+  const exp = !isEqualButton
+    ? `$${displayedExpression}$`
+    : `$${result}$`;
+
+  console.log(exp);
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
       <div>
@@ -22,7 +30,10 @@ const Screen: React.FC<ScreenProps> = ({
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
         <div className="mt-3 w-full truncate text-right text-2xl">
-          {!isEqualButton ? displayedExpression : result}
+          {!isEqualButton ? expression : result}
+        </div>
+        <div className="mt-3 w-full truncate text-right text-2xl font-bold">
+          <Latex>{exp}</Latex>
         </div>
       </div>
     </div>
