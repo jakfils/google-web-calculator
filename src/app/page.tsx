@@ -67,6 +67,7 @@ export default function Home() {
 
   useEffect(() => {
     const formatted = expression
+
       .replace(
         /\^([^()\s+\-*/^{]*)(\(([^()]*|\([^()]*\))*\))?/g,
         (_match, simplePart, parenPart) => {
@@ -86,13 +87,21 @@ export default function Home() {
       )
       .replaceAll("180/pi*", "")
       .replaceAll("pi/180*", "")
-      .replaceAll("sqrt", "√")
+      // .replaceAll("sqrt", "√")
       .replaceAll("*", "×")
       .replaceAll("/", "÷")
       .replaceAll("pi", "π")
       .replaceAll("log", "ln")
       .replaceAll("LgTen", "log")
-      .replaceAll("%", "\\%");
+      .replaceAll("%", "\\%")
+      .replace(
+        /nthRoot\(([^,]+?)\s*,\s*((?:[^()]*|\([^()]*\))*)\)/g,
+        (_match, a, b) => `\\sqrt[${b || ""}]{${a || ""}}`,
+      )
+      .replace(
+        /sqrt\(((?:[^()]*|\([^()]*\))*)\)/g,
+        (_match, b) => `\\sqrt{${b}}`,
+      );
 
     setDisplayedExpression(formatted);
   }, [expression]);
@@ -300,9 +309,9 @@ export default function Home() {
 
       const lastChar = beforeCursor.slice(-1);
       // const isLastOperator = /[+\-*/]/.test(lastChar);
-      const isLastOperator = ["+", "-", "*", "/"].includes(lastChar);
+      const isLastOperator = ["+", "-", "*", "/", "^"].includes(lastChar);
       // const isNewOperator = /[+\-*/]/.test(value);
-      const isNewOperator = ["+", "-", "*", "/"].includes(value);
+      const isNewOperator = ["+", "-", "*", "/", "^"].includes(value);
 
       let newExpression = beforeCursor + value + afterCursor;
 
