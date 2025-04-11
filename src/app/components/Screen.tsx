@@ -16,7 +16,6 @@ const Screen: React.FC<ScreenProps> = ({
   expression,
 }) => {
   const exp = !isEqualButton ? `$${displayedExpression}$` : `$${result}$`;
-  console.log(exp);
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
       <div>
