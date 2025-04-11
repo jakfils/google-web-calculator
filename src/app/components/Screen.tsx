@@ -13,7 +13,6 @@ const Screen: React.FC<ScreenProps> = ({
   result,
   isEqualButton,
   displayedExpression,
-  expression,
 }) => {
   const exp = !isEqualButton ? `$${displayedExpression}$` : `$${result}$`;
   return (
