@@ -25,9 +25,6 @@ const Screen: React.FC<ScreenProps> = ({
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
-        <div className="mt-3 w-full truncate text-right text-2xl">
-          {!isEqualButton ? expression : result}
-        </div>
         <div className="mt-3 w-full truncate text-right text-xl font-bold">
           <Latex>{exp}</Latex>
         </div>
