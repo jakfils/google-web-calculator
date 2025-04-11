@@ -327,10 +327,11 @@ export default function Home() {
           endsWithE ||
           endsWithPercent ||
           (isLastCharDigit && isPow10));
-
-      const beforeInsert = needsMultiplication
-        ? beforeCursor + "*"
-        : beforeCursor;
+      const shouldSkipMultiplication = value === "^2";
+      const beforeInsert =
+        needsMultiplication && !shouldSkipMultiplication
+          ? beforeCursor + "*"
+          : beforeCursor;
 
       let newExpression = beforeInsert + value + afterCursor;
 
@@ -347,7 +348,6 @@ export default function Home() {
       return newExpression;
     });
   };
-
 
   const handleFx = (value: string) => {
     setIsFxActive(value === "fx");
