@@ -308,22 +308,25 @@ export default function Home() {
       const afterCursor = cleanPrev.slice(cursorPosition);
 
       const lastChar = beforeCursor.slice(-1);
-      // const lastThreeChars = beforeCursor.slice(-3);
       const lastTwoChars = beforeCursor.slice(-2);
 
       const isLastOperator = ["+", "-", "*", "/", "^"].includes(lastChar);
       const isNewOperator = ["+", "-", "*", "/", "^"].includes(value);
 
-      // Vérifie si le dernier élément est "pi", "e" ou "%" (et non suivi d’un opérateur)
       const endsWithPi = lastTwoChars === "pi";
       const endsWithE = lastChar === "e";
       const endsWithPercent = lastChar === "%";
 
-      const needsMultiplication =
-        (endsWithPi || endsWithE || endsWithPercent) && !isNewOperator;
+      const isLastCharDigit = /\d/.test(lastChar);
+      const isPow10 = value === "pow(10,)";
 
-      // Si c’est "pi", on remonte de 2 caractères, sinon 1 seul
-      // const prefixLength = endsWithPi ? 2 : 1;
+      // Nouveau cas : si chiffre avant et pow(10,) après → ajouter "*"
+      const needsMultiplication =
+        !isNewOperator &&
+        (endsWithPi ||
+          endsWithE ||
+          endsWithPercent ||
+          (isLastCharDigit && isPow10));
 
       const beforeInsert = needsMultiplication
         ? beforeCursor + "*"
