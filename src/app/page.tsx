@@ -91,7 +91,8 @@ export default function Home() {
       .replaceAll("/", "÷")
       .replaceAll("pi", "π")
       .replaceAll("log", "ln")
-      .replaceAll("LgTen", "log");
+      .replaceAll("LgTen", "log")
+      .replaceAll("%", "\\%");
 
     setDisplayedExpression(formatted);
   }, [expression]);
