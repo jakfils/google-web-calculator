@@ -416,7 +416,6 @@ export default function Home() {
           result: evaluatedExpression,
         },
       ]);
-      console.error("Expression invalide :", error);
     }
   };
   return (
