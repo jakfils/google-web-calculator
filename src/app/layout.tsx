@@ -22,7 +22,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <body
         suppressHydrationWarning
-        className={`${openSans.variable} flex justify-center antialiased`}
+        className={`${openSans.variable} flex min-h-screen justify-center antialiased`}
       >
         {children}
       </body>
