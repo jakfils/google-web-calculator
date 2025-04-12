@@ -405,7 +405,7 @@ export default function Home() {
           result: evaluatedExpression,
         },
       ]);
-    } catch (error) {
+    } catch {
       setResult("Error");
       const evaluatedExpression: string = "Error";
       setHistory((prev) => [
