@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
-import { evaluate, abs } from "mathjs";
+import History from "./components/History";
+import { evaluate, abs, boolean } from "mathjs";
 
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export default function Home() {
   const resetExpression = () => {
     setExpression("0");
   };
+  const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false);
   const handleDegActive = (value: string) => {
     setIsDegActive(value === "deg");
   };
@@ -63,6 +65,9 @@ export default function Home() {
 
       return newExpression;
     });
+  };
+  const handleIsHistoryShown = () => {
+    setIsHistoryShown(!isHistoryShown);
   };
 
   useEffect(() => {
@@ -383,7 +388,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="m-2 w-full rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">
+      <main className="relative m-2 w-full rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">
         <div>
           <Screen
             result={result}
@@ -391,6 +396,7 @@ export default function Home() {
             isEqualButton={isEqualButton}
             cursorPosition={cursorPosition}
             displayedExpression={displayedExpression}
+            handleIsHistoryShown={handleIsHistoryShown}
           />
         </div>
         <div>
@@ -410,6 +416,10 @@ export default function Home() {
           />
         </div>
         <DigitFxSwitcher isFxActive={isFxActive} handleFx={handleFx} />
+        <History
+          isHistoryShown={isHistoryShown}
+          handleIsHistoryShown={handleIsHistoryShown}
+        ></History>
       </main>
     </>
   );

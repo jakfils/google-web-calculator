@@ -8,11 +8,13 @@ interface ScreenProps {
   isEqualButton: boolean;
   cursorPosition: number;
   displayedExpression: string;
+  handleIsHistoryShown: () => void;
 }
 const Screen: React.FC<ScreenProps> = ({
   result,
   isEqualButton,
   displayedExpression,
+  handleIsHistoryShown,
 }) => {
   const exp = !isEqualButton ? `$${displayedExpression}$` : `$${result}$`;
   return (
@@ -20,7 +22,12 @@ const Screen: React.FC<ScreenProps> = ({
       <div>
         <div className="mt-1 flex justify-between">
           <button className="text-[var(--history-text-color)]">
-            <MdHistory className="cursor-pointer" />
+            <MdHistory
+              className="cursor-pointer"
+              onClick={() => {
+                handleIsHistoryShown();
+              }}
+            />
           </button>
           <div className="text-sm text-[var(--history-text-color)]">answer</div>
         </div>
