@@ -22,27 +22,31 @@ const History: React.FC<HistoryProps> = ({
         }}
       />
       <div>
-        <ul className="mt-3">
-          {history.map((item) => (
-            <li key={item.id} className="mb-4">
-              <button className="rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]">
-                {<Latex>{`$${item.expression}$`}</Latex>}
-              </button>{" "}
-              ={" "}
-              <button
-                onClick={() => {
-                  console.log("Bonjour");
-                }}
-                className={classNames(
-                  "rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]",
-                  item.result === "Error" && "cursor-not-allowed opacity-70",
-                )}
-              >
-                {item.result}
-              </button>
-            </li>
-          ))}
-        </ul>
+        {history.length === 0 ? (
+          <p>Your calculations and results appear here for reuse</p>
+        ) : (
+          <ul className="mt-3">
+            {history.map((item) => (
+              <li key={item.id} className="mb-4">
+                <button className="cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]">
+                  {<Latex>{`$${item.expression}$`}</Latex>}
+                </button>{" "}
+                ={" "}
+                <button
+                  onClick={() => {
+                    console.log("Bonjour");
+                  }}
+                  className={classNames(
+                    "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]",
+                    item.result === "Error" && "cursor-not-allowed opacity-70",
+                  )}
+                >
+                  {item.result}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   ) : null;
