@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
@@ -114,6 +114,18 @@ export default function Home() {
 
     setDisplayedExpression(formatted);
   }, [expression]);
+
+  useEffect(() => {
+    const handleBodyClick = () => {
+      setIsHistoryShown(false);
+    };
+
+    document.body.addEventListener("click", handleBodyClick);
+
+    return () => {
+      document.body.removeEventListener("click", handleBodyClick);
+    };
+  }, []);
 
   const functionMappings = [
     "180/pi*asin()",
