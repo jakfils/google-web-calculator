@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 import History from "./components/History";
-import { evaluate, abs, boolean } from "mathjs";
+import { evaluate, abs } from "mathjs";
 
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
@@ -16,10 +16,14 @@ export default function Home() {
     expression.length,
   );
   const [isDegActive, setIsDegActive] = useState<boolean>(false);
+  const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false);
+  const [history, setHistory] = useState<
+    { id: number; expression: string; result: number | string }[]
+  >([]);
+
   const resetExpression = () => {
     setExpression("0");
   };
-  const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false);
   const handleDegActive = (value: string) => {
     setIsDegActive(value === "deg");
   };
@@ -380,12 +384,29 @@ export default function Home() {
       setResult(
         abs(evaluatedExpression) < 1e-14 ? 0 : (evaluatedExpression as number),
       );
+
+      setHistory((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          expression: displayedExpression,
+          result: evaluatedExpression,
+        },
+      ]);
     } catch (error) {
       setResult("Error");
+      const evaluatedExpression: string = "Error";
+      setHistory((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          expression: displayedExpression,
+          result: evaluatedExpression,
+        },
+      ]);
       console.error("Expression invalide :", error);
     }
   };
-
   return (
     <>
       <main className="relative m-2 w-full rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">
@@ -419,6 +440,7 @@ export default function Home() {
         <History
           isHistoryShown={isHistoryShown}
           handleIsHistoryShown={handleIsHistoryShown}
+          history={history}
         ></History>
       </main>
     </>
