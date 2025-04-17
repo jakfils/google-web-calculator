@@ -440,6 +440,7 @@ export default function Home() {
             cursorPosition={cursorPosition}
             displayedExpression={displayedExpression}
             handleIsHistoryShown={handleIsHistoryShown}
+            history={history}
           />
         </div>
         <div>
