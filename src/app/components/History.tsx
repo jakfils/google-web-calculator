@@ -6,7 +6,12 @@ import classNames from "classnames";
 interface HistoryProps {
   isHistoryShown: boolean;
   handleIsHistoryShown: () => void;
-  history: { id: number; expression: string; displayedExpression:string, result: string | number }[];
+  history: {
+    id: number;
+    expression: string;
+    displayedExpression: string;
+    result: string | number;
+  }[];
   onHistoryItemClick: (value: string) => void;
 }
 const History: React.FC<HistoryProps> = ({
@@ -35,7 +40,7 @@ const History: React.FC<HistoryProps> = ({
                     console.log("Bonsoir");
                     onHistoryItemClick(item.expression); // Envoie l'expression
                   }}
-                  className="cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]"
+                  className="max-w-[30%] cursor-pointer truncate rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)] sm:max-w-[50%]"
                 >
                   {<Latex>{`$${item.displayedExpression}$`}</Latex>}
                 </button>{" "}
@@ -43,10 +48,11 @@ const History: React.FC<HistoryProps> = ({
                 <button
                   onPointerDown={() => {
                     console.log("Bonjour");
-                    onHistoryItemClick(String(item.result));
+                    item.result !== "Error" &&
+                      onHistoryItemClick(item.result.toString());
                   }}
                   className={classNames(
-                    "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]",
+                    "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)]",
                     item.result === "Error" && "cursor-not-allowed opacity-70",
                   )}
                 >
