@@ -48,8 +48,9 @@ const History: React.FC<HistoryProps> = ({
                 <button
                   onPointerDown={() => {
                     console.log("Bonjour");
-                    item.result !== "Error" &&
+                    if (item.result !== "Error") {
                       onHistoryItemClick(item.result.toString());
+                    }
                   }}
                   className={classNames(
                     "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)]",
