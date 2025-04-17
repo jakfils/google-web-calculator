@@ -6,12 +6,14 @@ import classNames from "classnames";
 interface HistoryProps {
   isHistoryShown: boolean;
   handleIsHistoryShown: () => void;
-  history: { id: number; expression: string; result: string | number }[];
+  history: { id: number; expression: string; displayedExpression:string, result: string | number }[];
+  onHistoryItemClick: (value: string) => void;
 }
 const History: React.FC<HistoryProps> = ({
   isHistoryShown,
   handleIsHistoryShown,
   history,
+  onHistoryItemClick,
 }) => {
   return isHistoryShown ? (
     <div className="absolute top-0 mt-1 max-h-96 min-h-30 w-5/6 overflow-y-auto rounded-xl bg-[var(--calculator-bg-color)] p-4 sm:max-h-80 sm:w-4/5">
@@ -28,13 +30,20 @@ const History: React.FC<HistoryProps> = ({
           <ul className="mt-3">
             {history.map((item) => (
               <li key={item.id} className="mb-4">
-                <button className="cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]">
-                  {<Latex>{`$${item.expression}$`}</Latex>}
+                <button
+                  onPointerDown={() => {
+                    console.log("Bonsoir");
+                    onHistoryItemClick(item.expression); // Envoie l'expression
+                  }}
+                  className="cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]"
+                >
+                  {<Latex>{`$${item.displayedExpression}$`}</Latex>}
                 </button>{" "}
                 ={" "}
                 <button
-                  onClick={() => {
+                  onPointerDown={() => {
                     console.log("Bonjour");
+                    onHistoryItemClick(String(item.result));
                   }}
                   className={classNames(
                     "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-[var(--equal-bg-color)]",

@@ -18,7 +18,12 @@ export default function Home() {
   const [isDegActive, setIsDegActive] = useState<boolean>(false);
   const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false);
   const [history, setHistory] = useState<
-    { id: number; expression: string; result: number | string }[]
+    {
+      id: number;
+      expression: string;
+      displayedExpression: string;
+      result: number | string;
+    }[]
   >([]);
 
   const resetExpression = () => {
@@ -29,6 +34,10 @@ export default function Home() {
   };
   const handleEqualButton = (value: string) => {
     SetIsEqualButton(value === "equal");
+  };
+
+  const handleHistoryItemClick = (value: string) => {
+    handleInsert(value, value.length);
   };
 
   const handleCloseBracket = () => {
@@ -401,7 +410,8 @@ export default function Home() {
         ...prev,
         {
           id: prev.length + 1,
-          expression: displayedExpression,
+          expression: expression,
+          displayedExpression: displayedExpression,
           result: evaluatedExpression,
         },
       ]);
@@ -412,7 +422,8 @@ export default function Home() {
         ...prev,
         {
           id: prev.length + 1,
-          expression: displayedExpression,
+          expression: expression,
+          displayedExpression: displayedExpression,
           result: evaluatedExpression,
         },
       ]);
@@ -452,6 +463,7 @@ export default function Home() {
           isHistoryShown={isHistoryShown}
           handleIsHistoryShown={handleIsHistoryShown}
           history={history}
+          onHistoryItemClick={handleHistoryItemClick}
         ></History>
       </main>
     </>
