@@ -7,17 +7,19 @@ import History from "./components/History";
 import { evaluate, format } from "mathjs";
 
 export default function Home() {
-  const [isFxActive, setIsFxActive] = useState<boolean>(false);
-  const [expression, setExpression] = useState<string>("0");
-  const [displayedExpression, setDisplayedExpression] = useState<string>("0");
-  const [result, setResult] = useState<number | string>(0);
-  const [isEqualButton, SetIsEqualButton] = useState<boolean>(false);
+  // State for calculator functionality
+  const [isFxActive, setIsFxActive] = useState<boolean>(false); // Toggle for function pad
+  const [expression, setExpression] = useState<string>("0"); // Raw math expression
+  const [displayedExpression, setDisplayedExpression] = useState<string>("0"); // Formatted expression for display
+  const [result, setResult] = useState<number | string>(0); // Calculation result
+  const [isEqualButton, SetIsEqualButton] = useState<boolean>(false); // Track if equals was pressed
   const [cursorPosition, setCursorPosition] = useState<number>(
     expression.length,
-  );
-  const [isDegActive, setIsDegActive] = useState<boolean>(false);
-  const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false);
+  ); // Cursor position in expression
+  const [isDegActive, setIsDegActive] = useState<boolean>(false); // Degrees/radians mode
+  const [isHistoryShown, setIsHistoryShown] = useState<boolean>(false); // History panel visibility
   const [history, setHistory] = useState<
+    // Calculation history
     {
       id: number;
       expression: string;
@@ -26,20 +28,27 @@ export default function Home() {
     }[]
   >([]);
 
+  // Reset expression to "0"
   const resetExpression = () => {
     setExpression("0");
   };
+
+  // Toggle between degrees and radians
   const handleDegActive = (value: string) => {
     setIsDegActive(value === "deg");
   };
+
+  // Track equals button state
   const handleEqualButton = (value: string) => {
     SetIsEqualButton(value === "equal");
   };
 
+  // Handle clicking on history items
   const handleHistoryItemClick = (value: string) => {
     handleInsert(value, value.length);
   };
 
+  // Move cursor to closing bracket position
   const handleCloseBracket = () => {
     const beforeCursor = expression.slice(0, cursorPosition);
     const afterCursor = expression.slice(cursorPosition);
@@ -48,6 +57,7 @@ export default function Home() {
     setCursorPosition(newCursorPos);
   };
 
+  // Handle nth root operation
   const handleNthRoot = () => {
     handleEqualButton("none");
     setExpression((prev) => {
@@ -55,6 +65,8 @@ export default function Home() {
       const afterCursor = prev.slice(cursorPosition);
       const match = beforeCursor.match(/(-?\d*\.?\d+|e|pi)$/);
       let newExpression = beforeCursor + afterCursor;
+
+      // Handle nthRoot after equals press
       if (match && isEqualButton) {
         if (result !== "Error") {
           newExpression = "nthRoot(" + result.toString() + ",)";
@@ -65,6 +77,8 @@ export default function Home() {
           setCursorPosition(10);
         }
       }
+
+      // Handle nthRoot during normal input
       if (match && !isEqualButton) {
         newExpression =
           beforeCursor.slice(0, -match[0].toString().length) +
@@ -79,13 +93,15 @@ export default function Home() {
       return newExpression;
     });
   };
+
+  // Toggle history panel
   const handleIsHistoryShown = () => {
     setIsHistoryShown(!isHistoryShown);
   };
 
+  // Format expression for display using LaTeX
   useEffect(() => {
     const formatted = expression
-
       .replace(
         /\^([^()\s+\-*/^{]*)(\(([^()]*|\([^()]*\))*\))?/g,
         (_match, simplePart, parenPart) => {
@@ -121,6 +137,7 @@ export default function Home() {
     setDisplayedExpression(formatted);
   }, [expression]);
 
+  // Close history when clicking outside
   useEffect(() => {
     const handleBodyClick = () => {
       setIsHistoryShown(false);
@@ -133,6 +150,7 @@ export default function Home() {
     };
   }, []);
 
+  // Supported math functions
   const functionMappings = [
     "180/pi*asin()",
     "180/pi*acos()",
@@ -157,6 +175,7 @@ export default function Home() {
     "Ans",
   ];
 
+  // Handle AC (All Clear) button
   const handleAC = () => {
     setExpression((prev) => {
       if (prev.length === 0) return prev;
@@ -166,6 +185,7 @@ export default function Home() {
 
       if (beforeCursor.length === 0) return afterCursor;
 
+      // Special handling for nthRoot deletion
       const nthRootIndex: number = findNthRootStart(prev, cursorPos);
       if (nthRootIndex !== -1) {
         const closingIndex: number = findMatchingClosingParen(
@@ -179,6 +199,8 @@ export default function Home() {
           return newExpr === "" ? "0" : newExpr;
         }
       }
+
+      // Handle deletion of functions with parentheses
       if (beforeCursor.endsWith(")")) {
         let openParenIndex = -1;
         let parenCount = 1;
@@ -213,6 +235,7 @@ export default function Home() {
         }
       }
 
+      // Handle partial function deletion
       for (const funcValue of functionMappings) {
         for (let i = 1; i <= funcValue.length; i++) {
           const funcStart = funcValue.slice(0, i);
@@ -232,7 +255,7 @@ export default function Home() {
             setCursorPosition(newBeforeCursor.length);
 
             if (newExpression === "") {
-              setCursorPosition(1); 
+              setCursorPosition(1);
               return "0";
             } else {
               return newExpression;
@@ -241,6 +264,7 @@ export default function Home() {
         }
       }
 
+      // Handle simple function deletion
       for (const func of functionMappings.filter((f) => !f.includes("("))) {
         if (beforeCursor.endsWith(func)) {
           setCursorPosition(cursorPosition - func.length);
@@ -248,11 +272,12 @@ export default function Home() {
         }
       }
 
+      // Default case - delete single character
       if (cursorPosition > 0) {
         const newExpression = beforeCursor.slice(0, -1) + afterCursor;
 
         if (newExpression === "") {
-          setCursorPosition(1); 
+          setCursorPosition(1);
           return "0";
         } else {
           setCursorPosition(cursorPosition - 1);
@@ -263,6 +288,7 @@ export default function Home() {
     });
   };
 
+  // Helper to find nthRoot start position
   function findNthRootStart(expr: string, cursorPos: number): number {
     let index: number = Math.min(cursorPos - 1, expr.length - 1);
     while (index >= 0) {
@@ -274,6 +300,7 @@ export default function Home() {
     return -1;
   }
 
+  // Helper to find matching closing parenthesis
   function findMatchingClosingParen(expr: string, openPos: number): number {
     let parenCount: number = 1;
     for (let i: number = openPos + 1; i < expr.length; i++) {
@@ -284,7 +311,7 @@ export default function Home() {
     return -1;
   }
 
-
+  // Handle inserting operations after equals press
   const handleMultipleOperations = (value: string) => {
     handleEqualButton("none");
     if (result !== "Error") {
@@ -295,10 +322,13 @@ export default function Home() {
       setCursorPosition(2);
     }
   };
+
+  // Handle inserting values into expression
   const handleInsert = (value: string, offset: number = 0) => {
     setExpression((prev) => {
       handleEqualButton("none");
 
+      // Determine if we should keep the initial zero
       const keepZero =
         value === "*" ||
         value === "!" ||
@@ -327,6 +357,7 @@ export default function Home() {
       const isLastCharDigit = /\d/.test(lastChar);
       const isPow10 = value === "pow(10,)";
 
+      // Determine if we need implicit multiplication
       const needsMultiplication =
         !isNewOperator &&
         (endsWithPi ||
@@ -341,6 +372,7 @@ export default function Home() {
 
       let newExpression = beforeInsert + value + afterCursor;
 
+      // Handle operator replacement
       if (isLastOperator && isNewOperator) {
         if (!(lastChar === "*" && value === "-")) {
           newExpression = beforeCursor.slice(0, -1) + value + afterCursor;
@@ -355,9 +387,12 @@ export default function Home() {
     });
   };
 
+  // Toggle function pad
   const handleFx = (value: string) => {
     setIsFxActive(value === "fx");
   };
+
+  // Calculate and display result
   const handleResult = () => {
     try {
       const containAns = expression.includes("Ans");
@@ -370,16 +405,19 @@ export default function Home() {
                 .replace(/LgTen/g, "log10"),
             )
           : evaluate(expression);
+
+      // Handle complex/undefined results
       if (
         evaluatedExpression.toString().includes("i") ||
         evaluatedExpression.toString().includes("infinity")
       ) {
-        throw new Error("Imaginaire ou infini");
+        throw new Error("Imaginary or infinite");
       }
       const formatedResult = format(evaluatedExpression, { precision: 11 });
 
       setResult(formatedResult);
 
+      // Add to history
       setHistory((prev) => [
         ...prev,
         {
@@ -403,6 +441,7 @@ export default function Home() {
       ]);
     }
   };
+
   return (
     <>
       <main className="relative m-2 w-full rounded-sm bg-[var(--calculator-bg-color)] p-1 sm:w-4/5 md:w-3/4 lg:w-[640px]">

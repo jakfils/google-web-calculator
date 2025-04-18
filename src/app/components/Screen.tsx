@@ -2,6 +2,7 @@
 import { MdHistory } from "react-icons/md";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+
 interface ScreenProps {
   result: number | string;
   expression: string;
@@ -16,6 +17,7 @@ interface ScreenProps {
     result: string | number;
   }[];
 }
+
 const Screen: React.FC<ScreenProps> = ({
   result,
   isEqualButton,
@@ -23,11 +25,14 @@ const Screen: React.FC<ScreenProps> = ({
   handleIsHistoryShown,
   history,
 }) => {
+  // Determine what to display based on equals button state
   const exp = !isEqualButton ? `$${displayedExpression}$` : `$${result}$`;
+
   return (
     <div className="mb-2 rounded-xl border-1 border-[var(--result-area-border-color)] px-4">
       <div>
         <div className="mt-1 flex justify-between py-2">
+          {/* History toggle button */}
           <button className="py-1 text-[var(--history-text-color)]">
             <MdHistory
               className="cursor-pointer"
@@ -36,6 +41,7 @@ const Screen: React.FC<ScreenProps> = ({
               }}
             />
           </button>
+          {/* Previous calculation display */}
           <div className="text-sm text-[var(--history-text-color)]">
             {isEqualButton
               ? history.length > 0 && (
@@ -52,6 +58,7 @@ const Screen: React.FC<ScreenProps> = ({
                 )}
           </div>
         </div>
+        {/* Main display area with LaTeX rendering */}
         <div className="w-full truncate text-right text-xl font-bold">
           <Latex>{exp}</Latex>
         </div>
@@ -59,4 +66,5 @@ const Screen: React.FC<ScreenProps> = ({
     </div>
   );
 };
+
 export default Screen;

@@ -4,6 +4,7 @@ import { TbMathPi } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { random } from "mathjs";
+
 interface DigitPadProps {
   isFxActive: boolean;
   handleResult: () => void;
@@ -18,6 +19,7 @@ interface DigitPadProps {
   handleMultipleOperations: (value: string) => void;
   handleNthRoot: () => void;
 }
+
 const DigitPad: React.FC<DigitPadProps> = ({
   isFxActive,
   handleResult,
@@ -32,10 +34,13 @@ const DigitPad: React.FC<DigitPadProps> = ({
   handleMultipleOperations,
   handleNthRoot,
 }) => {
+  // Toggle inverse functions
   const [isInvActive, setIsInvActive] = useState(false);
   const handleInv = () => {
     setIsInvActive(!isInvActive);
   };
+
+  // Class names for responsive layout
   const phoneDigitClass = classNames(
     { hidden: isFxActive },
     { "sm:flex": true },
@@ -44,7 +49,6 @@ const DigitPad: React.FC<DigitPadProps> = ({
     { hidden: !isFxActive, flex: isFxActive },
     { "sm:flex": true },
   );
-
   const phoneNoInvClass = classNames(
     { hidden: (isFxActive && isInvActive) || !isFxActive },
     { "sm:flex": !isInvActive, "sm:hidden": isInvActive },
@@ -59,6 +63,7 @@ const DigitPad: React.FC<DigitPadProps> = ({
 
   return (
     <div className="grid grid-cols-4 grid-rows-4 gap-2 sm:grid-cols-7">
+      {/* All calculator buttons with appropriate handlers */}
       <button
         onClick={() => {
           onInsert("()", 1);
