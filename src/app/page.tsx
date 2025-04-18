@@ -424,7 +424,7 @@ export default function Home() {
           id: prev.length + 1,
           expression: expression,
           displayedExpression: displayedExpression,
-          result: evaluatedExpression,
+          result: formatedResult,
         },
       ]);
     } catch {
