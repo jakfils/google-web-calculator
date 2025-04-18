@@ -141,8 +141,6 @@ The **Google Web Calculator** is a responsive, feature-rich calculator applicati
 
 - ❌ **No support for complex numbers** (shows "Error").
 - ❌ **No keyboard input** (click/touch only).
-- ❌ **No calculation history** (planned feature).
-
 ---
 
 ## 📜 License
