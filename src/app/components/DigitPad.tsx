@@ -444,7 +444,6 @@ const DigitPad: React.FC<DigitPadProps> = ({
       <button
         onClick={() => {
           onInsert("sqrt()", 5);
-          // handleDisplayedExpression("sqrt", "√");
         }}
         className={classNames(
           "fx sm:col-start-3 sm:row-start-4",

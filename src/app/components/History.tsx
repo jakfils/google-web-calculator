@@ -38,7 +38,7 @@ const History: React.FC<HistoryProps> = ({
                 <button
                   onPointerDown={() => {
                     console.log("Bonsoir");
-                    onHistoryItemClick(item.expression); // Envoie l'expression
+                    onHistoryItemClick(item.expression); 
                   }}
                   className="max-w-[30%] cursor-pointer truncate rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)] sm:max-w-[50%]"
                 >

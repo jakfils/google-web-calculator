@@ -4,7 +4,7 @@ import Screen from "./components/Screen";
 import DigitPad from "./components/DigitPad";
 import DigitFxSwitcher from "./components/DigitFxSwitcher";
 import History from "./components/History";
-import { evaluate, abs } from "mathjs";
+import { evaluate, format } from "mathjs";
 
 export default function Home() {
   const [isFxActive, setIsFxActive] = useState<boolean>(false);
@@ -93,19 +93,16 @@ export default function Home() {
           return `^{${content}}`;
         },
       )
-      // Gère pow(10, ...) avec des parenthèses imbriquées
       .replace(
         /pow\(10\s*,\s*((?:[^()]*|\([^()]*\))*)\)/g,
         (_match, b) => `10^{${b || ""}}`,
       )
-      // Gère pow(e, ...) avec des parenthèses imbriquées
       .replace(
         /pow\(e\s*,\s*((?:[^()]*|\([^()]*\))*)\)/g,
         (_match, b) => `e^{${b || ""}}`,
       )
       .replaceAll("180/pi*", "")
       .replaceAll("pi/180*", "")
-      // .replaceAll("sqrt", "√")
       .replaceAll("*", "×")
       .replaceAll("/", "÷")
       .replaceAll("pi", "π")
@@ -160,7 +157,6 @@ export default function Home() {
     "Ans",
   ];
 
-  // ******************************************************************************************
   const handleAC = () => {
     setExpression((prev) => {
       if (prev.length === 0) return prev;
@@ -168,15 +164,14 @@ export default function Home() {
       const beforeCursor = prev.slice(0, cursorPosition);
       const afterCursor = prev.slice(cursorPosition);
 
-      if (beforeCursor.length === 0) return afterCursor; // Si on est au début, rien à supprimer avant
+      if (beforeCursor.length === 0) return afterCursor;
 
-      // Détection spéciale pour nthRoot() avec gestion d'imbrication
       const nthRootIndex: number = findNthRootStart(prev, cursorPos);
       if (nthRootIndex !== -1) {
         const closingIndex: number = findMatchingClosingParen(
           prev,
           nthRootIndex + 8,
-        ); // +8 pour "nthRoot("
+        );
         if (closingIndex !== -1) {
           const newExpr: string =
             prev.substring(0, nthRootIndex) + prev.substring(closingIndex + 1);
@@ -184,13 +179,10 @@ export default function Home() {
           return newExpr === "" ? "0" : newExpr;
         }
       }
-      // Nouveau bloc: Vérifier si le curseur est juste après une parenthèse fermante
-      // et que cette parenthèse correspond à une fonction complète
       if (beforeCursor.endsWith(")")) {
         let openParenIndex = -1;
         let parenCount = 1;
 
-        // Parcourir à rebours pour trouver la parenthèse ouvrante correspondante
         for (let i = beforeCursor.length - 2; i >= 0; i--) {
           if (beforeCursor[i] === ")") parenCount++;
           if (beforeCursor[i] === "(") parenCount--;
@@ -202,13 +194,11 @@ export default function Home() {
         }
 
         if (openParenIndex !== -1) {
-          // Vérifier si avant la parenthèse ouvrante il y a une de nos fonctions
           for (const funcValue of functionMappings.filter((f) =>
             f.includes("("),
           )) {
             const funcName = funcValue.split("(")[0];
             if (beforeCursor.slice(0, openParenIndex).endsWith(funcName)) {
-              // Supprimer toute la fonction
               const newBeforeCursor = beforeCursor.slice(
                 0,
                 openParenIndex - funcName.length,
@@ -223,20 +213,15 @@ export default function Home() {
         }
       }
 
-      // Vérifier si le curseur est à l'intérieur d'une fonction
       for (const funcValue of functionMappings) {
-        // Vérifier différentes positions possibles du curseur dans la fonction
         for (let i = 1; i <= funcValue.length; i++) {
           const funcStart = funcValue.slice(0, i);
           const funcEnd = funcValue.slice(i);
 
-          // Si le texte avant le curseur se termine par le début de la fonction
-          // et le texte après le curseur commence par la fin de la fonction
           if (
             beforeCursor.endsWith(funcStart) &&
             afterCursor.startsWith(funcEnd)
           ) {
-            // Supprimer la fonction entière
             const newBeforeCursor = beforeCursor.slice(
               0,
               beforeCursor.length - funcStart.length,
@@ -244,12 +229,10 @@ export default function Home() {
             const newAfterCursor = afterCursor.slice(funcEnd.length);
             const newExpression = newBeforeCursor + newAfterCursor;
 
-            // Mettre à jour la position du curseur
             setCursorPosition(newBeforeCursor.length);
 
-            // Si l'expression devient vide, retourner "0"
             if (newExpression === "") {
-              setCursorPosition(1); // Positionner après le "0"
+              setCursorPosition(1); 
               return "0";
             } else {
               return newExpression;
@@ -258,7 +241,6 @@ export default function Home() {
         }
       }
 
-      // Vérifier si le curseur est juste après une fonction complète sans parenthèses
       for (const func of functionMappings.filter((f) => !f.includes("("))) {
         if (beforeCursor.endsWith(func)) {
           setCursorPosition(cursorPosition - func.length);
@@ -266,13 +248,11 @@ export default function Home() {
         }
       }
 
-      // Suppression caractère par caractère par défaut
-      // Si le curseur n'est pas dans une fonction, supprimer simplement un caractère
       if (cursorPosition > 0) {
         const newExpression = beforeCursor.slice(0, -1) + afterCursor;
 
         if (newExpression === "") {
-          setCursorPosition(1); // Positionner après le "0"
+          setCursorPosition(1); 
           return "0";
         } else {
           setCursorPosition(cursorPosition - 1);
@@ -283,7 +263,6 @@ export default function Home() {
     });
   };
 
-  // Helper typé avec substring() au lieu de substr()
   function findNthRootStart(expr: string, cursorPos: number): number {
     let index: number = Math.min(cursorPos - 1, expr.length - 1);
     while (index >= 0) {
@@ -295,7 +274,6 @@ export default function Home() {
     return -1;
   }
 
-  // Helper typé inchangé
   function findMatchingClosingParen(expr: string, openPos: number): number {
     let parenCount: number = 1;
     for (let i: number = openPos + 1; i < expr.length; i++) {
@@ -306,7 +284,6 @@ export default function Home() {
     return -1;
   }
 
-  // **********************************************************************************
 
   const handleMultipleOperations = (value: string) => {
     handleEqualButton("none");
@@ -350,7 +327,6 @@ export default function Home() {
       const isLastCharDigit = /\d/.test(lastChar);
       const isPow10 = value === "pow(10,)";
 
-      // Nouveau cas : si chiffre avant et pow(10,) après → ajouter "*"
       const needsMultiplication =
         !isNewOperator &&
         (endsWithPi ||
@@ -394,17 +370,15 @@ export default function Home() {
                 .replace(/LgTen/g, "log10"),
             )
           : evaluate(expression);
-      // Vérifier si le résultat est un nombre complexe (contient "i")
       if (
         evaluatedExpression.toString().includes("i") ||
         evaluatedExpression.toString().includes("infinity")
       ) {
         throw new Error("Imaginaire ou infini");
       }
+      const formatedResult = format(evaluatedExpression, { precision: 11 });
 
-      setResult(
-        abs(evaluatedExpression) < 1e-14 ? 0 : (evaluatedExpression as number),
-      );
+      setResult(formatedResult);
 
       setHistory((prev) => [
         ...prev,
