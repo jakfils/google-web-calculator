@@ -44,7 +44,7 @@ const History: React.FC<HistoryProps> = ({
                   onPointerDown={() => {
                     onHistoryItemClick(item.expression);
                   }}
-                  className="max-w-[30%] cursor-pointer truncate rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)] sm:max-w-[50%]"
+                  className="max-w-[30%] cursor-pointer truncate rounded-md border-1 border-[var(--digit-text-color)] px-3 py-1 text-sm text-[var(--equal-bg-color)] sm:max-w-[50%]"
                 >
                   {<Latex>{`$${item.displayedExpression}$`}</Latex>}
                 </button>{" "}
@@ -56,7 +56,7 @@ const History: React.FC<HistoryProps> = ({
                     }
                   }}
                   className={classNames(
-                    "cursor-pointer rounded-md border-1 border-white px-3 py-1 text-sm text-[var(--equal-bg-color)]",
+                    "cursor-pointer rounded-md border-1 border-[var(--digit-text-color)] px-3 py-1 text-sm text-[var(--equal-bg-color)]",
                     item.result === "Error" && "cursor-not-allowed opacity-70",
                   )}
                 >
